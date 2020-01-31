@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/18 12:24:38 by aleon-ca          #+#    #+#             */
-/*   Updated: 2019/12/28 18:52:16 by aleon-ca         ###   ########.fr       */
+/*   Created: 2020/01/20 15:38:15 by aleon-ca          #+#    #+#             */
+/*   Updated: 2020/01/20 15:46:15 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,5 @@ char			*ft_strndup(char *src, int n);
 char			*ft_strunichr(int len, int c);
 void			ft_strrep(char *str, int changed, int replacer);
 char			*ft_itoabase(int n, char *base);
+char			*ft_ultoabase(unsigned long  n, char *base);
 #endif

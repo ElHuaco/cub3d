@@ -1,85 +1,49 @@
-#include "minilibx_opengl_20191021/mlx.h"
-#include "libft/libft.h"
-#include <unistd.h>
-#include <stdlib.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/01/31 12:52:52 by aleon-ca          #+#    #+#             */
+/*   Updated: 2020/01/31 15:20:25 by aleon-ca         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int		ft_pixel_key(int key, void *par)
+#include "cub3d.h"
+
+int				ray_caster(t_vars *var)
 {
-	char *a;
-	t_list	*param;
-	static void	*img;
-	static int x;
-	static int y;
-	int		size[2]; size[0] = 10; size[1] = 10;
+}
 
-	param = (t_list *)par;
-	img = mlx_png_file_to_image(param->content, "2.png", size, size + 1);
-	a = ft_itoabase(key, "0123456789");
-	mlx_string_put(param->content, (param->next)->content, 250, 250, 100000 * key, "SALUT LES AMIS");
-	write(1, a, ft_strlen(a));
-	write(1, "\n", 1);
-	if (key == 53)
-		exit(0);
-	if (key == 49)
-	{
-		x = 100;
-		y = 100;
-		mlx_put_image_to_window(param->content, (param->next)->content, img, x, y);
-	}
-	if (key == 123)
-	{
-		mlx_destroy_image(param->content, img);
-		mlx_put_image_to_window(param->content, (param->next)->content, img, x--, y);
-	}
-	if (key == 124)
-	{
-		mlx_destroy_image(param->content, img);
-		mlx_put_image_to_window(param->content, (param->next)->content, img, x++, y);
-	}
-	if (key == 125)
-	{
-		mlx_destroy_image(param->content, img);
-		mlx_put_image_to_window(param->content, (param->next)->content, img, x, y++);
-	}
-	if (key == 126)
-	{
-		mlx_destroy_image(param->content, img);
-		mlx_put_image_to_window(param->content, (param->next)->content, img, x, y--);
-	}
+int				camera_update(int key, t_vars *var)
+{
+}
+
+static int		x_close(t_vars *var)
+{
+	exit(0);
 	return (0);
 }
 
-int		ft_close(int button, int x, int y, void *par)
+int				main(int argc, char **argv)
 {
-	char	*a;
-	t_list	*param;
-	
-	a = ft_itoabase(button, "0123456789");
-	param = (t_list *)par;
-	if ((!x) || (!y))
-		mlx_destroy_window(param->content, (param->next)->content);
-	write(1, a, ft_strlen(a));
-	write(1, "\n", 1);
-	return (0);
-}
+	t_vars	var;
+	t_maps	map;
 
-int		main(void)
-{
-	void	*mlx_ptr;
-	void	*win;
-	t_list	**begin;
-
-	if ((mlx_ptr = mlx_init()))
+	if (argc != 2)
 	{
-		begin = malloc(sizeof(t_list **) * 1);
-		*begin = ft_lstnew(mlx_ptr);
-		win = mlx_new_window(mlx_ptr, 500, 500, "Ventana");
-		(*begin)->next = ft_lstnew(win);
-		mlx_pixel_put(mlx_ptr, win, 250, 250, 0xFFFFFF);
-		mlx_key_hook(win, ft_pixel_key, *begin);
-		mlx_mouse_hook(win, ft_close, *begin);
-		mlx_loop(mlx_ptr);
-		free(begin);
+		perror("Error: argument count must be 1.\n");
+		exit(1);
 	}
+	map = read_cub_file(argv, &var);
+	init_player_map_param(&map, &var);
+	var.map = &map;
+	var.mlx = mlx_init();
+	var.win = mlx_new_window(var.mlx, WIN_WIDTH, WIN_HEIGHT, "cub3d");
+	mlx_loop_hook(var.mlx, ray_caster, &var);
+	mlx_hook(var.win, 2, 1L<<0, camera_update, &var);
+	mlx_hook(var.win, 17, 0, x_close, &var);
+	mlx_loop(var.mlx);
 	return (0);
 }
