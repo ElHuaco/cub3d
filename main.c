@@ -6,12 +6,12 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/31 12:52:52 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/04 18:34:44 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/04 19:21:56 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
+#include "libc.h"
 static int		check_map_error(char **map)
 {
 	int		player_pos;
@@ -49,24 +49,24 @@ static int		init_map_textures(t_maps *map, char **lines)
 	buff = ft_split(lines[0], ' ');
 	map->res_height = ft_atoi(buff[2]);
 	map->res_width = ft_atoi(buff[1]);
-	free(buff);
+	full_free((void **)buff);
 	map->textures = malloc(sizeof(char *) * (4 + SPRITE_NUMBER + 1));
 	i = -1;
 	while ((*(*(buff = ft_split(lines[++i], ' ')))) != 'F')
 	{
 		map->textures[i] = buff[1];
-		free(buff);
+		free(buff[0]);
 	}
 	map->textures[i] = 0;
 	map->floor_color = ft_atoi(buff[1]) * 65536 +
 		ft_atoi(ft_strchr(buff[1], ',') + 1)
 		* 256 + ft_atoi(ft_strrchr(buff[1], ','));
-	free(buff);
+	full_free((void **)buff);
 	buff = ft_split(lines[i + 1], ' ');
 	map->ceiling_color = ft_atoi(buff[1]) * 65536 +
 		ft_atoi(ft_strchr(buff[1], ',') + 1)
 		* 256 + ft_atoi(ft_strrchr(buff[1], ','));
-	free(buff);
+	full_free((void **)buff);
 	return (i + 2);
 }
 
@@ -114,6 +114,7 @@ static t_maps	read_cub_file(char **argv, t_vars *var)
 	}
 	i = init_map_textures(&result, map);
 	init_player_map_param(&result, var, map + i);
+	full_free((void **)map);
 	return (result);
 }
 
@@ -130,6 +131,7 @@ int				main(int argc, char **argv)
 	}
 	map = read_cub_file(argv, &var);
 	var.map = &map;
+	getchar();
 	/*var.mlx = mlx_init();
 	var.win = mlx_new_window(var.mlx, WIN_WIDTH, WIN_HEIGHT, "cub3d");
 	mlx_loop_hook(var.mlx, ray_caster, &var);

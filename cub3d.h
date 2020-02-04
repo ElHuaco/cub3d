@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 15:16:50 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/04 18:19:31 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/04 18:41:35 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int		check_wall_error(char *line, int *param);
 int		check_player_pos_error(char **m, int i, int *count);
 
 void	find_player_pos(t_maps *map, t_vars *var);
+void	full_free(void **buff);
 
 # define WIN_WIDTH 640
 # define WIN_HEIGHT 480
