@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 15:16:50 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/02 22:52:40 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/04 16:15:37 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ typedef struct	s_img
 int		ray_caster(t_vars *var);
 int		camera_update(int keycode, t_vars *var);
 int		x_close(t_vars *var);
+
+char	*skip_spaces(char *str);
 
 # define WIN_WIDTH 640
 # define WIN_HEIGHT 480
