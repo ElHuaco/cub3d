@@ -1,35 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ray_caster.c                                       :+:      :+:    :+:   */
+/*   read_utils2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/02 20:00:13 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/04 18:28:30 by aleon-ca         ###   ########.fr       */
+/*   Created: 2020/02/04 18:14:43 by aleon-ca          #+#    #+#             */
+/*   Updated: 2020/02/04 18:27:42 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-/*
-int				ray_caster(t_vars *var)
-{
-	//Crea la imagen según sigma, x, y, map values, map textures
-	//Guarda la primera imagen si hay --save
-}
 
-int				camera_update(int key, t_vars *var)
+void		find_player_pos(t_maps *map, t_vars *var)
 {
-	//Modifica sigma, x, y, para llamar a ray_caster de nuevo
-}
+	int i;
+	int	j;
+	int n;
 
-int		x_close(t_vars *var)
-{
-	if (var->map->textures)
-		free(var->map->textures);
-	if (var->map->val)
-		free(var->map->val);
-	exit(0);
-	return (0);
+	n = ft_arrlen(map->val);
+	i = -1;
+	while (++i < n)
+	{
+		j = -1;
+		while (++j < map->width)
+		{
+			if (is_player_pos(map->val[i][j]))
+			{
+				var->x = (double)j;
+				var->y = (double)i;
+				break ;
+			}
+		}
+	}
 }
-*/
