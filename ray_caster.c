@@ -6,15 +6,16 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 20:00:13 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/02 22:54:21 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/03 14:33:13 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
+/*
 int				ray_caster(t_vars *var)
 {
 	//Crea la imagen según sigma, x, y, map values, map textures
+	//Guarda la primera imagen si hay --save
 }
 
 int				camera_update(int key, t_vars *var)
@@ -31,3 +32,4 @@ int		x_close(t_vars *var)
 	exit(0);
 	return (0);
 }
+*/
