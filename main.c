@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/31 12:52:52 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/04 12:14:10 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/04 12:53:27 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,11 @@ static int		check_map_error(char **map)
 {
 	int		player_pos;
 	int		i[4];
-	char	*str;
 
 	i[1] = ft_strlen(map[SPRITE_NUMBER + 7]);
 	player_pos = 0;
 	i[2] = ft_arrlen(map);
 	i[0] = SPRITE_NUMBER + 6;
-	str = ft_strunichr(i[1], '1');
 	while (++i[0] < i[2])
 	{
 ft_printf("\t\tCHECKEANDO LINEA %d\n", i[0]);
@@ -32,11 +30,6 @@ ft_printf("\t\tCHECKEANDO LINEA %d\n", i[0]);
 		if ((int)ft_strlen(map[i[0]]) != i[1])
 			return (1);	
 ft_printf("Longitud línea %d correcta\n", i[0]);
-		if (((i[0] == 0) || (i[0] == i[1] - 1)) && (ft_strcmp(str, map[i[0]])))
-			return (1);
-		else if ((map[i[0]][0] != '1') && (map[i[0]][i[1] - 1] != '1'))
-			return (1);
-ft_printf("Muros línea %d correctos\n", i[0]);
 		i[3] = -1;
 		while (map[i[0]][i[3]++])
 		{
@@ -45,8 +38,21 @@ ft_printf("Muros línea %d correctos\n", i[0]);
 			   	&& (map[i[0]][i[3]] != '0') && (map[i[0]][i[3]] != '1')
 				&& (map[i[0]][i[3]] != '2'))
 				return (1);
-		}
 ft_printf("No hay caracteres extraños en línea %d\n", i[0]);
+			if (((i[0] == 0) || (i[0] == i[2] - 1)) && (map[i[0]][i[3]] != '1'))
+			{
+				ft_printf("Caracter mal en %d, %d: %c\n", i[0], i[3], map[i[0]][i[3]]);
+				return (1);
+			}
+			else if (((i[0] != 0) && (i[0] != i[2] - 1)) && ((ft_strchr(map[i[0]], '1') != map[i[0]])
+				|| (ft_strrchr(map[i[0]], '1') != map[i[0]] + i[1] - 1)
+				|| (ft_strchr(map[i[0]] + 1, '1') != ft_strrchr(map[i[0]], '1'))))
+			{
+				ft_printf("Muros mal: \n\tMuro Inicial: %p, Muro final: %p, Muro a mitad %p\n", (ft_strchr(map[i[0]], '1')),  (ft_strrchr(map[i[0]], '1')) , (ft_strchr(map[i[0]] + 1, '1')));
+				return (1);
+			}
+		}
+ft_printf("Muros línea %d correctos\n", i[0]);
 	}
 	if (player_pos != 1)
 		return (1);
@@ -125,12 +131,9 @@ static t_maps	read_cub_file(char **argv, t_vars *var)
 	while ((get_next_line(fd, &line)) > 0)
 	{
 		map[++i] = line;
-		/*ft_printf("------> gnl da: %d, de linea: %s\n", i, line);
-		ft_printf("map línea %d: %s\n", i, map[i]);*/
-		free(line);
+		//Quitar lo espacios de los map[i]
 	}
 	map[i] = 0;
-	free(line);
 	close(fd);
 	if (check_map_error(map))
 	{
