@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/31 12:52:52 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/05 14:49:06 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/05 16:16:43 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,11 +132,13 @@ int				main(int argc, char **argv)
 	}
 	map = read_cub_file(argv, &var);
 	var.map = &map;
-	/*var.mlx = mlx_init();
+	if (argc == 3)
+		var.must_save = 1;
+	var.mlx = mlx_init();
 	var.win = mlx_new_window(var.mlx, WIN_WIDTH, WIN_HEIGHT, "cub3d");
 	mlx_loop_hook(var.mlx, ray_caster, &var);
-	mlx_hook(var.win, 2, 1L<<0,ft_printf("%s\n", map[i[0]]); camera_update, &var);
+	mlx_hook(var.win, 2, 1L<<0, camera_update, &var);
 	mlx_hook(var.win, 17, 0, x_close, &var);
-	mlx_loop(var.mlx);*/
+	mlx_loop(var.mlx);
 	return (0);
 }

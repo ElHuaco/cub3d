@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 15:16:50 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/05 14:45:58 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/05 16:15:01 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef struct	s_maps
 	char		**textures;
 	int			floor_color;
 	int			ceiling_color;
+	int			must_save;
 }				t_maps;
 
 typedef struct	s_vars
