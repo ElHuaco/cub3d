@@ -6,27 +6,25 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 18:14:43 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/04 19:21:07 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/05 14:38:18 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void		full_free(void **buff)
+void		full_free(void **buff, int n)
 {
 	int i;
-	int n;
 
 	if (buff)
 	{
-	n = ft_arrlen((char **)buff);
-	i = -1;
-	while (++i < n)
-	{
-		if (buff[i])
-			free(buff[i]);
-	}
-	free(buff);
+		i = -1;
+		while (++i < n)
+		{
+			if (buff[i])
+				free(buff[i]);
+		}
+		free(buff);
 	}
 }
 

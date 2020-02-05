@@ -6,12 +6,12 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/31 12:52:52 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/04 19:21:56 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/05 14:49:06 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-#include "libc.h"
+
 static int		check_map_error(char **map)
 {
 	int		player_pos;
@@ -49,24 +49,25 @@ static int		init_map_textures(t_maps *map, char **lines)
 	buff = ft_split(lines[0], ' ');
 	map->res_height = ft_atoi(buff[2]);
 	map->res_width = ft_atoi(buff[1]);
-	full_free((void **)buff);
+	full_free((void **)buff, 3);
 	map->textures = malloc(sizeof(char *) * (4 + SPRITE_NUMBER + 1));
-	i = -1;
+	i = 0;
 	while ((*(*(buff = ft_split(lines[++i], ' ')))) != 'F')
 	{
 		map->textures[i] = buff[1];
 		free(buff[0]);
+		free(buff);
 	}
 	map->textures[i] = 0;
 	map->floor_color = ft_atoi(buff[1]) * 65536 +
 		ft_atoi(ft_strchr(buff[1], ',') + 1)
 		* 256 + ft_atoi(ft_strrchr(buff[1], ','));
-	full_free((void **)buff);
+	full_free((void **)buff, 2);
 	buff = ft_split(lines[i + 1], ' ');
 	map->ceiling_color = ft_atoi(buff[1]) * 65536 +
 		ft_atoi(ft_strchr(buff[1], ',') + 1)
 		* 256 + ft_atoi(ft_strrchr(buff[1], ','));
-	full_free((void **)buff);
+	full_free((void **)buff, 2);
 	return (i + 2);
 }
 
@@ -100,13 +101,13 @@ static t_maps	read_cub_file(char **argv, t_vars *var)
 	int		i;
 
 	if (((fd = open(argv[1], O_RDONLY)) == -1)
-		|| !(map = malloc(sizeof(char *) * 30)))
+		|| !(map = malloc(sizeof(char *) * READ_SIZE)))
 		exit(1);
 	i = -1;
 	while ((get_next_line(fd, &line)) > 0)
 		map[++i] = line;
+	free(line);
 	map[++i] = 0;
-	close(fd);
 	if (check_map_error(map))
 	{
 		perror("Error: wrong cub file format.\n");
@@ -114,7 +115,7 @@ static t_maps	read_cub_file(char **argv, t_vars *var)
 	}
 	i = init_map_textures(&result, map);
 	init_player_map_param(&result, var, map + i);
-	full_free((void **)map);
+	full_free((void **)map, READ_SIZE);
 	return (result);
 }
 
@@ -131,7 +132,6 @@ int				main(int argc, char **argv)
 	}
 	map = read_cub_file(argv, &var);
 	var.map = &map;
-	getchar();
 	/*var.mlx = mlx_init();
 	var.win = mlx_new_window(var.mlx, WIN_WIDTH, WIN_HEIGHT, "cub3d");
 	mlx_loop_hook(var.mlx, ray_caster, &var);
