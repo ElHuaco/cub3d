@@ -6,52 +6,18 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 17:39:16 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/06 12:56:19 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/06 14:55:16 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void	first_cuad_calc(t_vars *var, int *cell, double **dist, int **step)
-{
-	*dist[2] = fabs(*dist[0]) * (cell[0] + 1.0 - var->x);
-	*step[0] = 1;
-	*dist[3] = fabs(*dist[1]) * (cell[1] + 1.0 - var->y);
-	*step[1] = 1;	
-}
-
-static void	second_cuad_calc(t_vars *var, int *cell, double **dist, int **step)
-{
-	*dist[2] = fabs(*dist[0]) * ( -1 * cell[0] + var->x);
-	*step[0] = -1;
-	*dist[3] = fabs(*dist[1]) * (cell[1] + 1.0 - var->y);
-	*step[1] = 1;	
-}
-
-static void	third_cuad_calc(t_vars *var, int *cell, double **dist, int **step)
-{
-	*dist[2] = fabs(*dist[0]) * ( -1 * cell[0] +  var->x);
-	*step[0] = -1;
-	*dist[3] = fabs(*dist[1]) * (-1 * cell[1] + var->y);
-	*step[1] = -1;	
-}
-
-static void	forth_cuad_calc(t_vars *var, int *cell, double **dist, int **step)
-{
-	*dist[2] = fabs(*dist[0]) * (cell[0] + 1.0 - var->x);
-	*step[0] = 1;
-	*dist[3] = fabs(*dist[1]) * (-1 * cell[1] + var->y);
-	*step[1] = -1;	
-}
-
 double		ray_distance(t_vars *var, int col)
 {
 	double		phi;
-	double		dist[5];
-	int			step[2];
-	int			map_cell[2];
-	char		side;
-	
+	double		dist[7];
+	int			map_cell[3];
+
 	phi = var->sigma - FOV / 2 + (FOV / WIN_WIDTH) * i;
 	dist[0] = 1.0 / cosf(phi);
 	dist[1] = 1.0 / senf(phi);
@@ -59,46 +25,7 @@ double		ray_distance(t_vars *var, int col)
 	map_cell[1] = (int)var->y;
 	if (phi >= 360.0)
 		phi -= 360.0;
-	if ((phi > 0.0) && (phi < 90.0))
-		first_cuad_calc(var, map_cell, &dist, &step);
-	else if ((phi > 90.0) && (phi < 180.0))
-		second_cuad_calc(var, map_cell, &dist, &step);
-	else if ((phi > 180.0) && (phi < 270.0))
-		third_cuad_calc(var, map_cell, &dist, &step);
-	else if ((phi > 270.0) && (phi < 360.0))
-		fourth_cuad_calc(var, map_cell, &dist, &step);
-	else if (phi == 0.0)
-	{
-		phi_zero_calc();
-		dist[2] = fabs(dist[0]) * (map_cell[0] + 1.0 - var->x);
-		step[0] = 1;
-		dist[3] = INFINITY;
-		step[1] = 0;
-	}
-	else if (phi == 90.0)
-	{
-		phi_pi_half_calc();
-		dist[2] = INFINITY;
-		step[0] = 0;
-		dist[3] = fabs(dist[1]) * (map_cell[1] + 1.0 - var->y);
-		step[1] = 1;
-	}
-	else if (phi == 180.0)
-	{
-		phi_pi_calc();
-		dist[2] = fabs(dist[0]) * ( -1 * map_cell[0] +  var->x);
-		step[0] = -1;
-		dist[3] = INFINITY;
-		step[1] = 0;
-	}
-	else if (phi == 270.0)
-	{
-		phi_three_pi_half_calc();
-		dist[2] = INFINITY;
-		step[0] = 0;
-		dist[3] = fabs(dist[1]) * (-1 * map_cell[1] + var->y);
-		step[1] = -1;
-	}
+	cuad_calc(var, phi, map_cell, &dist);	
 	while (var->map->val[map_cell[1]][map_cell[0]] != '1')
 	{
 		if (dist[2] > dist[3])
