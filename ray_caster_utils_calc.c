@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 17:39:16 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/05 17:46:08 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/06 12:56:19 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	first_cuad_calc(t_vars *var, int *cell, double **dist, int **step)
 	*step[1] = 1;	
 }
 
-static void	first_cuad_calc(t_vars *var, int *cell, double **dist, int **step)
+static void	second_cuad_calc(t_vars *var, int *cell, double **dist, int **step)
 {
 	*dist[2] = fabs(*dist[0]) * ( -1 * cell[0] + var->x);
 	*step[0] = -1;
@@ -28,7 +28,7 @@ static void	first_cuad_calc(t_vars *var, int *cell, double **dist, int **step)
 	*step[1] = 1;	
 }
 
-static void	first_cuad_calc(t_vars *var, int *cell, double **dist, int **step)
+static void	third_cuad_calc(t_vars *var, int *cell, double **dist, int **step)
 {
 	*dist[2] = fabs(*dist[0]) * ( -1 * cell[0] +  var->x);
 	*step[0] = -1;
@@ -36,7 +36,7 @@ static void	first_cuad_calc(t_vars *var, int *cell, double **dist, int **step)
 	*step[1] = -1;	
 }
 
-static void	first_cuad_calc(t_vars *var, int *cell, double **dist, int **step)
+static void	forth_cuad_calc(t_vars *var, int *cell, double **dist, int **step)
 {
 	*dist[2] = fabs(*dist[0]) * (cell[0] + 1.0 - var->x);
 	*step[0] = 1;
@@ -67,6 +67,38 @@ double		ray_distance(t_vars *var, int col)
 		third_cuad_calc(var, map_cell, &dist, &step);
 	else if ((phi > 270.0) && (phi < 360.0))
 		fourth_cuad_calc(var, map_cell, &dist, &step);
+	else if (phi == 0.0)
+	{
+		phi_zero_calc();
+		dist[2] = fabs(dist[0]) * (map_cell[0] + 1.0 - var->x);
+		step[0] = 1;
+		dist[3] = INFINITY;
+		step[1] = 0;
+	}
+	else if (phi == 90.0)
+	{
+		phi_pi_half_calc();
+		dist[2] = INFINITY;
+		step[0] = 0;
+		dist[3] = fabs(dist[1]) * (map_cell[1] + 1.0 - var->y);
+		step[1] = 1;
+	}
+	else if (phi == 180.0)
+	{
+		phi_pi_calc();
+		dist[2] = fabs(dist[0]) * ( -1 * map_cell[0] +  var->x);
+		step[0] = -1;
+		dist[3] = INFINITY;
+		step[1] = 0;
+	}
+	else if (phi == 270.0)
+	{
+		phi_three_pi_half_calc();
+		dist[2] = INFINITY;
+		step[0] = 0;
+		dist[3] = fabs(dist[1]) * (-1 * map_cell[1] + var->y);
+		step[1] = -1;
+	}
 	while (var->map->val[map_cell[1]][map_cell[0]] != '1')
 	{
 		if (dist[2] > dist[3])
@@ -85,7 +117,7 @@ double		ray_distance(t_vars *var, int col)
 	if (side == 'h')
 		dist[4] = dist[0] * (map_cell[0] - var->x + (1.0 - step[0]) / 2.0);
 	else if (side == 'v')
-
+		dist[4] = dist[1] * (map_cell[1] - var->y + (1.0 - step[1]) / 2.0);
 	return (dist[4]);
 }
 

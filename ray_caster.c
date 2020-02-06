@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 20:00:13 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/05 17:20:14 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/06 12:44:04 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,13 @@
 int				ray_caster(t_vars *var)
 {
 	//Crea la imagen según sigma, x, y, map values, map textures
-	//	Para cada columna de la ventana x, calcular distancia hasta chocar muro
-	//	lanzando un rayo con phi(x), qué lado toca.
 	int		i;
-	double	phi;
-	double	dist[4];
-	int		step[2];
 	double	len[3];
-	//No declaramos mapX, mapY, posX, posY
 	i = -1;
 	while (++i < WIN_WIDTH)
 	{
+	//	Para cada columna de la ventana, i, calcular distancia hasta chocar muro
+	//	lanzando un rayo con phi(x), qué lado toca.
 		len = ray_distance(t_vars *var, i)
 	}
 	//Si must_save == 1 guarda la imagen y pone must_save == 0
