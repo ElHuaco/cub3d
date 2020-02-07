@@ -6,13 +6,13 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 14:37:35 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/06 14:54:51 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/07 16:50:42 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	cuad_calc(t_vars *var, double phi, int *map_cell, double **dist)
+void		cuad_calc(t_vars *var, double phi, int *map_cell, double **dist)
 {
 	if ((phi > 0.0) && (phi < 90.0))
 		first_cuad_calc(var, map_cell, &dist);
@@ -32,7 +32,7 @@ void	cuad_calc(t_vars *var, double phi, int *map_cell, double **dist)
 		phi_three_pi_half_calc(var, map_cell, &dist);
 }
 
-void	first_cuad_calc(t_vars *var, int *cell, double **dist)
+static void	first_cuad_calc(t_vars *var, int *cell, double **dist)
 {
 	*dist[2] = fabs(*dist[0]) * (cell[0] + 1.0 - var->x);
 	*dist[5] = 1;
@@ -40,7 +40,7 @@ void	first_cuad_calc(t_vars *var, int *cell, double **dist)
 	*dist[6] = 1;
 }
 
-void	second_cuad_calc(t_vars *var, int *cell, double **dist)
+static void	second_cuad_calc(t_vars *var, int *cell, double **dist)
 {
 	*dist[2] = fabs(*dist[0]) * ( -1 * cell[0] + var->x);
 	*dist[5] = -1;
@@ -48,7 +48,7 @@ void	second_cuad_calc(t_vars *var, int *cell, double **dist)
 	*dist[6] = 1;	
 }
 
-void	third_cuad_calc(t_vars *var, int *cell, double **dist)
+static void	third_cuad_calc(t_vars *var, int *cell, double **dist)
 {
 	*dist[2] = fabs(*dist[0]) * ( -1 * cell[0] +  var->x);
 	*dist[5] = -1;
@@ -56,7 +56,7 @@ void	third_cuad_calc(t_vars *var, int *cell, double **dist)
 	*dist[6] = -1;	
 }
 
-void	forth_cuad_calc(t_vars *var, int *cell, double **dist)
+static void	forth_cuad_calc(t_vars *var, int *cell, double **dist)
 {
 	*dist[2] = fabs(*dist[0]) * (cell[0] + 1.0 - var->x);
 	*dist[5] = 1;

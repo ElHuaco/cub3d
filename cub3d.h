@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 15:16:50 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/05 16:15:01 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/07 16:50:49 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,13 @@ typedef struct	s_img
 int		ray_caster(t_vars *var);
 int		camera_update(int keycode, t_vars *var);
 int		x_close(t_vars *var);
+
+double	ray_distance(t_vars *var, int col_number);
+void	cuad_calc(t_vars *var, double phi, int *map_cell, double **dist);
+void	phi_zero_calc(t_vars *var, int *map_cell, double **dist);
+void	phi_pi_half_calc(t_vars *var, int *map_cell, double **dist);
+void	phi_pi_calc(t_vars *var, int *map_cell, double **dist);
+void	phi_three_pi_half_calc(t_vars *var, int *map_cell, double **dist);
 
 char	*skip_spaces(char *str);
 int		is_cub_file_chr(int c);

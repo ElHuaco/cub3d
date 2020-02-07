@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 20:00:13 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/06 12:44:04 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/07 16:56:29 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int				ray_caster(t_vars *var)
 {
 	//Crea la imagen según sigma, x, y, map values, map textures
+	//  y la imprime en la ventana.
 	int		i;
 	double	len[3];
 	i = -1;
