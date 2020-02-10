@@ -6,13 +6,13 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/31 12:52:52 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/10 08:56:32 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/10 16:06:13 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-static int		check_map_error(char **map)
+#include "libc.h"
+static char		*check_map_error(char **map)
 {
 	int		player_pos;
 	int		i[5];
@@ -25,16 +25,16 @@ static int		check_map_error(char **map)
 	while (++i[0] < i[2])
 	{
 		if (check_player_pos_error(map, i[0], &player_pos))
-			return (1);
+			return (EPLAPOS);
 		if ((int)ft_strlen(map[i[0]]) != i[1])
-			return (1);
+			return (ELINELEN);
 		i[3] = 0;
 		while (map[i[0]][i[3]])
 		{
 			if (!(is_cub_file_chr(map[i[0]][i[3]])))
-				return (1);
+				return (ENONCHR);
 			if (check_wall_error(map[i[0]], i))
-				return (1);
+				return (ENOTCLO);
 			i[3] += 1;
 		}
 	}
@@ -88,8 +88,8 @@ static void		init_player_map_param(t_maps *map, t_vars *var, char **lines)
 	find_player_pos(map, var);
 	j = (int)var->x;
 	i = (int)var->y;
-	var->sigma = 0.0 * (map->val[i][j] == 'E') + 90.0 * (map->val[i][j] == 'N')
-		+ 180.0 * (map->val[i][j] == 'W') + 270.0 * (map->val[i][j] == 'S');
+	var->sigma = 0.0 * (map->val[i][j] == 'E') + PI2 * (map->val[i][j] == 'N')
+		+ PI * (map->val[i][j] == 'W') + _3PI2 * (map->val[i][j] == 'S');
 }
 
 static t_maps	read_cub_file(char **argv, t_vars *var)
@@ -108,9 +108,10 @@ static t_maps	read_cub_file(char **argv, t_vars *var)
 		map[++i] = line;
 	free(line);
 	map[++i] = 0;
-	if (check_map_error(map))
+	if ((line = check_map_error(map)))
 	{
-		perror("Error: wrong cub file format.\n");
+		perror("Error\n");
+		perror(line);
 		exit(1);
 	}
 	i = init_map_textures(&result, map);
@@ -132,14 +133,17 @@ int				main(int argc, char **argv)
 	}
 	map = read_cub_file(argv, &var);
 	var.map = &map;
+	printf("Mapa leido y asignado\n");
 	if (argc == 3)
 		var.must_save = 1;
 	var.mlx = mlx_init();
 	var.win = mlx_new_window(var.mlx,
 		var.map->res_width, var.map->res_height, "cub3d");
+	printf("Instancia mlx iniciada\n");
 	mlx_loop_hook(var.mlx, ray_caster, &var);
 	mlx_hook(var.win, 2, 1L<<0, camera_update, &var);
 	mlx_hook(var.win, 17, 0, x_close, &var);
 	mlx_loop(var.mlx);
+	printf("Se entró al loop\n");
 	return (0);
 }

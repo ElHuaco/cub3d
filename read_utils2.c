@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 18:14:43 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/05 14:38:18 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/10 11:49:07 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void		full_free(void **buff, int n)
 	if (buff)
 	{
 		i = -1;
-		while (++i < n)
+		while (++i < n && buff[i])
 		{
 			if (buff[i])
 				free(buff[i]);
@@ -43,8 +43,8 @@ void		find_player_pos(t_maps *map, t_vars *var)
 		{
 			if (is_player_pos(map->val[i][j]))
 			{
-				var->x = (double)j;
-				var->y = (double)i;
+				var->x = (double)j + 0.5;
+				var->y = (double)i + 0.5;
 				break ;
 			}
 		}

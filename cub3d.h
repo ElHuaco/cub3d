@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 15:16:50 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/10 09:12:37 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/10 15:58:09 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,13 @@
 # include <stdio.h>
 # include <fcntl.h>
 
-# define FOV 60.0
+# define FOV M_PI / 3.0
 # define SPRITE_NUMBER 1
 # define READ_SIZE 50
+# define PI M_PI
+# define PI2 PI / 2.0
+# define _3PI2 (3.0 / 2.0) * PI
+# define _2PI 2.0 * PI
 # define UP 126
 # define DOWN 125
 # define RIGHT 124
@@ -34,6 +38,10 @@
 # define S 1
 # define A 0
 # define D 2
+# define EPLAPOS "Wrong starting position number\n"
+# define ELINELEN "Different map line sizes\n"
+# define ENONCHR "Non cub file symbol found\n"
+# define ENOTCLO "Map not closed by walls\n"
 
 typedef struct		s_maps
 {
@@ -91,16 +99,16 @@ double	ray_distance(t_vars *var, int col_number);
  **		ray_caster_utils_calc2
  */
 
-void	cuad_calc(t_vars *var, double phi, int *map_cell, double (*dist)[7]);
+void	cuad_calc(t_vars *var, double phi, int *map_cell, double *dist);
 
 /*
  **		ray_caster_utils_calc3
  */
 
-void	phi_zero_calc(t_vars *var, int *map_cell, double (*dist)[7]);
-void	phi_pi_half_calc(t_vars *var, int *map_cell, double (*dist)[7]);
-void	phi_pi_calc(t_vars *var, int *map_cell, double (*dist)[7]);
-void	phi_three_pi_half_calc(t_vars *var, int *map_cell, double (*dist)[7]);
+void	phi_zero_calc(t_vars *var, int *map_cell, double *dist);
+void	phi_pi_half_calc(t_vars *var, int *map_cell, double *dist);
+void	phi_pi_calc(t_vars *var, int *map_cell, double *dist);
+void	phi_three_pi_half_calc(t_vars *var, int *map_cell, double *dist);
 
 /*
  **		read_utils

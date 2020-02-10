@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 20:00:13 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/10 09:04:30 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/10 16:24:02 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,21 +34,20 @@ static void	put_pixel_solid(t_imgs *img, int i, int j, unsigned int color)
 
 	dst = img->addr + j * img->ll + i * (img->bpp / 8);
 	*(unsigned int*)dst = color;
+	//printf("Pixel %d, %d asignado color %u", i, j, color);
 }
 
-static void	set_pixel_limits(t_vars *var, double (*len)[3])
+static void	set_pixel_limits(t_vars *var, double *len)
 {
-	if (*len[0] == 0.0)
-		*len[1] = 0.1;	//feo
-	else
-		*len[1] = var->map->res_height / *len[0];
-	*len[2] = *len[1];
-	*len[0] = (int)((-1* (int)*len[2] + var->map->res_height) / 2);
-	if (*len[0] < 0)
-		*len[0] = 0;
-	*len[1] = (int)(((int)*len[2] + var->map->res_height) / 2);
-	if (*len[1] >= var->map->res_height)
-		*len[1] = var->map->res_height - 1;
+	len[1] = var->map->res_height / len[0];
+	len[2] = len[1];
+	len[0] = (int)(-1* (*((int *)len + 2) + var->map->res_height) / 2);
+	if (len[0] < 0)
+		len[0] = 0;
+	len[1] = (int)((*((int *)len + 2) + var->map->res_height) / 2);
+	if (len[1] >= var->map->res_height)
+		len[1] = var->map->res_height - 1;
+	printf("\tPixeles cota: %d, %d\n", (int)len[0], (int)len[1]);
 }
 
 static void	save_img(t_vars *var, void *img)
@@ -68,11 +67,13 @@ int			ray_caster(t_vars *var)
 	img.img = mlx_new_image(var->mlx,
 		var->map->res_width, var->map->res_height);
 	img.addr = mlx_get_data_addr(img.img, &img.bpp, &img.ll, &img.endian);
+	printf("Imagen del frame creada\n");
 	i = -1;
 	while (++i < var->map->res_width)
 	{
 		len[0] = ray_distance(var, i);
-		set_pixel_limits(var, &len);
+		printf("\tDistancia %f para rayo %d\n", len[0], i);
+		set_pixel_limits(var, len);
 		j = -1;
 		while (++j < (int)len[0])
 			put_pixel_solid(&img, i, j, var->map->ceiling_color);

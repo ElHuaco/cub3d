@@ -6,26 +6,29 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 17:39:16 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/10 09:10:54 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/10 16:22:19 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void	cast_till_wall(t_vars *var, int (*map_cell)[3], double (*dist)[7])
+static void	cast_till_wall(t_vars *var, int *cell, double *dist)
 {
-	while (var->map->val[*map_cell[1]][*map_cell[0]] != '1')
+	while (var->map->val[cell[1]][cell[0]] != '1')
 	{
-		if (*dist[2] > *dist[3])
+		printf("\t%d %d es %c\n", cell[0], cell[1], var->map->val[cell[1]][cell[0]]);
+		printf("\tDists: %f %f\n", dist[2], dist[3]);
+		printf("\tSteps: %d %d\n", (int)dist[5], (int)dist[6]);
+		if (dist[2] < dist[3])
 		{
-			*dist[2] += fabs(*dist[0]);
-			*map_cell[0] += *dist[5];
+			dist[2] += fabs(dist[0]);
+			cell[0]  += (int)dist[5];
 			var->side = 'h';
 		}
 		else
 		{
-			*dist[3] += fabs(*dist[1]);
-			*map_cell[1] += *dist[6];
+			dist[3] += fabs(dist[1]);
+			cell[1] += (int)dist[6];
 			var->side = 'v';
 		}
 	}
@@ -33,13 +36,22 @@ static void	cast_till_wall(t_vars *var, int (*map_cell)[3], double (*dist)[7])
 
 static void	choose_a_side(t_vars *var, double phi)
 {
-	if (var->side == 'h' && fabs(phi) < 90.0 && fabs(phi) > 270.0)
+	if (var->side == 'h' && ((fabs(phi) < PI2 && fabs(phi) > 0.0)
+		|| (fabs(phi) > _3PI2 && fabs(phi) < _2PI)))
 		var->side = 'w';
-	else if (var->side == 'h' && fabs(phi) > 90.0 && fabs(phi) < 270.0)
+	else if (var->side == 'h' && fabs(phi) > PI2 && fabs(phi) < _3PI2)
 		var->side = 'e';
-	else if (var->side == 'v' && fabs(phi) < 180.0 && fabs(phi) > 0.0)
+	else if (var->side == 'v' && fabs(phi) < PI && fabs(phi) > 0.0)
 		var->side = 's';
-	else if (var->side == 'v' && fabs(phi) < 360.0 && fabs(phi) > 180.0)
+	else if (var->side == 'v' && fabs(phi) < _2PI && fabs(phi) > PI)
+		var->side = 'n';
+	else if (var->side == 'h' && (fabs(phi - 0.0) < 10e-7))
+		var->side = 'w';
+	else if (var->side == 'h' && (fabs(phi - PI) < 10e-7))
+		var->side = 'e';
+	else if (var->side == 'v' && (fabs(phi - PI2) < 10e7))
+		var->side = 's';
+	else if (var->side == 'v' && (fabs(phi - _3PI2) < 10e-7))
 		var->side = 'n';
 }
 
@@ -50,21 +62,21 @@ double		ray_distance(t_vars *var, int col)
 	int			map_cell[3];
 
 	phi = var->sigma - FOV / 2 + (FOV / (double)var->map->res_width) * col;
-	dist[0] = 1.0 / cos(phi);
-	dist[1] = 1.0 / sin(phi);
+	printf("Player en %f %f\n", var->x, var->y);
 	map_cell[0] = (int)var->x;
 	map_cell[1] = (int)var->y;
-	if (phi >= 360.0)
-		phi -= 360.0;
-	else if (phi <= -360.0)
-		phi += 360.0;
-	cuad_calc(var, phi, map_cell, &dist);
-	cast_till_wall(var, &map_cell, &dist);
+	if (phi > _2PI || phi < 0.0)
+		phi = phi + ((phi < 0) - (phi > 0)) * _2PI;
+	dist[0] = 1.0 / cos(phi);
+	dist[1] = -1.0 / sin(phi);
+	printf("\tRayo %d con %f-> sec: %f ->cosec: %f\n", col, phi * 180 / PI, dist[0], dist[1]);
+	cuad_calc(var, phi, map_cell, dist);
+	cast_till_wall(var, map_cell, dist);
 	choose_a_side(var, phi);
+	printf("\tMuro en %d %d, cara %c, para rayo %d\n", map_cell[0], map_cell[1], var->side, col);
 	if (var->side == 'w' || var->side == 'e')
 		dist[4] = dist[0] * (map_cell[0] - var->x + (1.0 - dist[5]) / 2.0);
 	else if (var->side == 'n' || var->side == 's')
 		dist[4] = dist[1] * (map_cell[1] - var->y + (1.0 - dist[6]) / 2.0);
 	return (dist[4]);
 }
-
