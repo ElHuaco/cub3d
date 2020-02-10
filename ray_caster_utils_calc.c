@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 17:39:16 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/10 16:22:19 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/10 16:40:17 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,10 @@ double		ray_distance(t_vars *var, int col)
 	map_cell[1] = (int)var->y;
 	if (phi > _2PI || phi < 0.0)
 		phi = phi + ((phi < 0) - (phi > 0)) * _2PI;
-	dist[0] = 1.0 / cos(phi);
-	dist[1] = -1.0 / sin(phi);
+	dist[0] = ((fabs(phi - PI2) < 10e-7) || (fabs(phi - _3PI2) < 10e-7))
+	 	? INFINITY : 1.0 / cos(phi);
+	dist[1] = ((fabs(phi - 0.0) < 10e-7) || (fabs(phi - PI) < 10e-7))
+		? INFINITY : -1.0 / sin(phi);
 	printf("\tRayo %d con %f-> sec: %f ->cosec: %f\n", col, phi * 180 / PI, dist[0], dist[1]);
 	cuad_calc(var, phi, map_cell, dist);
 	cast_till_wall(var, map_cell, dist);
