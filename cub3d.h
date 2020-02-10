@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 15:16:50 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/07 19:41:35 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/10 09:12:37 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,16 +91,16 @@ double	ray_distance(t_vars *var, int col_number);
  **		ray_caster_utils_calc2
  */
 
-void	cuad_calc(t_vars *var, double phi, int *map_cell, double **dist);
+void	cuad_calc(t_vars *var, double phi, int *map_cell, double (*dist)[7]);
 
 /*
  **		ray_caster_utils_calc3
  */
 
-void	phi_zero_calc(t_vars *var, int *map_cell, double **dist);
-void	phi_pi_half_calc(t_vars *var, int *map_cell, double **dist);
-void	phi_pi_calc(t_vars *var, int *map_cell, double **dist);
-void	phi_three_pi_half_calc(t_vars *var, int *map_cell, double **dist);
+void	phi_zero_calc(t_vars *var, int *map_cell, double (*dist)[7]);
+void	phi_pi_half_calc(t_vars *var, int *map_cell, double (*dist)[7]);
+void	phi_pi_calc(t_vars *var, int *map_cell, double (*dist)[7]);
+void	phi_three_pi_half_calc(t_vars *var, int *map_cell, double (*dist)[7]);
 
 /*
  **		read_utils

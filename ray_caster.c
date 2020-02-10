@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 20:00:13 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/07 20:41:45 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/10 09:04:30 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	put_pixel_texture(t_imgs *img, int i, int j, t_vars *var)
 	dst = img->addr + j * img->ll + i * (img->bpp / 8);
 	el =  0 * (var->side == 'n') + (var->side == 's') + 2 * (var->side == 'w')
 	+ 3 * (var->side == 'e');
-	textu.img = mlx_xpm_file_to_img(var->mlx, var->map->texture[el], &img_w, &img_h);
+	textu.img = mlx_xpm_file_to_image(var->mlx, var->map->textures[el], &img_w, &img_h);
 	textu.addr = mlx_get_data_addr(textu.img, &textu.bpp, &textu.ll, &textu.endian);
 	*(unsigned int*)dst = *(textu.addr + j * textu.ll + i * (textu.bpp / 8));
 }
@@ -36,7 +36,7 @@ static void	put_pixel_solid(t_imgs *img, int i, int j, unsigned int color)
 	*(unsigned int*)dst = color;
 }
 
-static void	set_pixel_limits(t_vars *var, double **len)
+static void	set_pixel_limits(t_vars *var, double (*len)[3])
 {
 	if (*len[0] == 0.0)
 		*len[1] = 0.1;	//feo

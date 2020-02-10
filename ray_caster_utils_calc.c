@@ -6,13 +6,13 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 17:39:16 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/07 20:20:18 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/10 09:10:54 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void	cast_till_wall(t_vars *var, int **map_cell, double **dist)
+static void	cast_till_wall(t_vars *var, int (*map_cell)[3], double (*dist)[7])
 {
 	while (var->map->val[*map_cell[1]][*map_cell[0]] != '1')
 	{
@@ -25,7 +25,7 @@ static void	cast_till_wall(t_vars *var, int **map_cell, double **dist)
 		else
 		{
 			*dist[3] += fabs(*dist[1]);
-			map_cell[1] += *dist[6];
+			*map_cell[1] += *dist[6];
 			var->side = 'v';
 		}
 	}
@@ -34,13 +34,13 @@ static void	cast_till_wall(t_vars *var, int **map_cell, double **dist)
 static void	choose_a_side(t_vars *var, double phi)
 {
 	if (var->side == 'h' && fabs(phi) < 90.0 && fabs(phi) > 270.0)
-		var->side == 'w';
+		var->side = 'w';
 	else if (var->side == 'h' && fabs(phi) > 90.0 && fabs(phi) < 270.0)
-		var->side == 'e';
+		var->side = 'e';
 	else if (var->side == 'v' && fabs(phi) < 180.0 && fabs(phi) > 0.0)
-		var->side == 's';
+		var->side = 's';
 	else if (var->side == 'v' && fabs(phi) < 360.0 && fabs(phi) > 180.0)
-		var->side == 'n';
+		var->side = 'n';
 }
 
 double		ray_distance(t_vars *var, int col)
@@ -49,9 +49,9 @@ double		ray_distance(t_vars *var, int col)
 	double		dist[7];
 	int			map_cell[3];
 
-	phi = var->sigma - FOV / 2 + (FOV / (double)var->map->res_width) * i;
-	dist[0] = 1.0 / cosf(phi);
-	dist[1] = 1.0 / senf(phi);
+	phi = var->sigma - FOV / 2 + (FOV / (double)var->map->res_width) * col;
+	dist[0] = 1.0 / cos(phi);
+	dist[1] = 1.0 / sin(phi);
 	map_cell[0] = (int)var->x;
 	map_cell[1] = (int)var->y;
 	if (phi >= 360.0)

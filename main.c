@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/31 12:52:52 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/07 17:08:37 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/10 08:56:32 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ int				main(int argc, char **argv)
 		var.must_save = 1;
 	var.mlx = mlx_init();
 	var.win = mlx_new_window(var.mlx,
-		var->map->res_width, var->map->res_height, "cub3d");
+		var.map->res_width, var.map->res_height, "cub3d");
 	mlx_loop_hook(var.mlx, ray_caster, &var);
 	mlx_hook(var.win, 2, 1L<<0, camera_update, &var);
 	mlx_hook(var.win, 17, 0, x_close, &var);
