@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 20:00:13 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/11 15:15:19 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/11 15:37:41 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,12 +87,12 @@ int			ray_caster(t_vars *var)
 		//printf("\tPutting ceiling till %d\n", (int)len[2]);
 		//printf("\tPutting wall till %d\n", (int)len[1]);
 		//printf("\tPutting floor till %d\n", var->map->res_height - 1);
-		while (++j < (int)len[2])
+		while (++j <= (int)len[2])
 			put_pixel_solid(&img, i, j, 0xff0000/*var->map->ceiling_color*/);
-		while (j++ < (int)len[1])
-			put_pixel_solid(&img, i, j, 0x00ff00);
-		while (j++ < var->map->res_height - 1)
-			put_pixel_solid(&img, i, j, 0x0000ff /*var->map->floor_color*/);
+		while (j < (int)len[1])
+			put_pixel_solid(&img, i, j++, 0x00ff00);
+		while (j < var->map->res_height - 1)
+			put_pixel_solid(&img, i, j++, 0x0000ff /*var->map->floor_color*/);
 	}
 	//printf("Pusheamos la imagen a la ventana\n");
 	mlx_put_image_to_window(var->mlx, var->win, img.img, 0, 0);

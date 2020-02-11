@@ -16,7 +16,7 @@ LIB3 = libft.a
 
 LIB1 = libmlx.a
 
-LIB2 = libmlx.dylib
+#LIB2 = libmlx.dylib
 
 NAME = cub3d
 
@@ -24,7 +24,7 @@ RM = rm -f
 
 $(NAME):
 			cd $(PATH1) && make && mv $(LIB1) .. && cd ..
-			cd $(PATH2) && make && mv $(LIB2) .. && cd ..
+#			cd $(PATH2) && make && mv $(LIB2) .. && cd ..
 			cd $(PATH3) && make && mv $(LIB3) .. && cd ..
 			gcc $(FLAGS) $(SRCS) -L. $(LIB_FLAGS) -o $(NAME)
 
@@ -32,12 +32,12 @@ all:		$(NAME)
 
 clean:
 			cd $(PATH1) && make clean && cd ..
-			cd $(PATH2) && make clean && cd ..
+#			cd $(PATH2) && make clean && cd ..
 			cd $(PATH3) && make clean && cd ..
 			$(RM) $(OBJS)
 
 fclean:		clean
-			$(RM) $(NAME) $(LIB1) $(LIB2) $(LIB3)
+			$(RM) $(NAME) $(LIB1) $(LIB3)
 
 re:			fclean all
 
