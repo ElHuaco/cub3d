@@ -6,12 +6,12 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 20:00:13 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/11 12:19:31 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/11 13:07:09 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
+/*
 static void	put_pixel_textures(t_imgs *img, int i, int j, t_vars *var)
 {
 	char	*dst;
@@ -28,13 +28,13 @@ static void	put_pixel_textures(t_imgs *img, int i, int j, t_vars *var)
 	textu.addr = mlx_get_data_addr(textu.img, &textu.bpp, &textu.ll, &textu.endian);
 	printf("asginamos pixel\n");
 	*(unsigned int*)dst = *(textu.addr + j * textu.ll + i * (textu.bpp / 8));
-}
+}*/
 
 static void	put_pixel_solid(t_imgs *img, int i, int j, unsigned int color)
 {
 	char	*dst;
 
-	printf("pixel solid called\n");
+	//printf("pixel solid called\n");
 	dst = img->addr + j * img->ll + i * (img->bpp / 8);
 	*(unsigned int*)dst = color;
 	//printf("Pixel %d, %d asignado color %u\n", i, j, color);
@@ -44,13 +44,13 @@ static void	set_pixel_limits(t_vars *var, double *len)
 {
 	len[1] = var->map->res_height / len[0];
 	len[2] = len[1];
-	len[0] = (int)(-1* (len[2] + var->map->res_height) / 2);
+	len[0] = (int)((-1 * len[2] + var->map->res_height) / 2);
 	if (len[0] < 0)
 		len[0] = 0;
 	len[1] = (int)((len[2] + var->map->res_height) / 2);
 	if (len[1] >= var->map->res_height)
 		len[1] = var->map->res_height - 1;
-	printf("\tPixeles cota: %d, %d\n", (int)len[0], (int)len[1]);
+	//printf("\tPixeles cota: %d, %d\n", (int)len[0], (int)len[1]);
 }
 
 static void	save_img(t_vars *var, void *img)
@@ -81,12 +81,13 @@ int			ray_caster(t_vars *var)
 		while (++j < (int)len[0])
 			put_pixel_solid(&img, i, j, 0xff0000/*var->map->ceiling_color*/);
 		while (j++ < (int)len[1])
-			put_pixel_textures(&img, i, j, var);
+			put_pixel_solid(&img, i, j, 0x00ff00);
 		while (j++ < var->map->res_height - 1)
 			put_pixel_solid(&img, i, j, 0x0000ff /*var->map->floor_color*/);
 	}
 	//printf("Pusheamos la imagen a la ventana\n");
 	mlx_put_image_to_window(var->mlx, var->win, img.img, 0, 0);
+	mlx_destroy_image(var->win, img.img);
 	if (var->must_save == 1)
 		save_img(var, img.img);
 	return (0);
