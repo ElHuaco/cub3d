@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/31 12:52:52 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/10 16:06:13 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/11 12:11:07 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,8 @@ static int		init_map_textures(t_maps *map, char **lines)
 	i = 0;
 	while ((*(*(buff = ft_split(lines[++i], ' ')))) != 'F')
 	{
-		map->textures[i] = buff[1];
+		map->textures[i - 1] = buff[1];
 		free(buff[0]);
-		free(buff);
 	}
 	map->textures[i] = 0;
 	map->floor_color = ft_atoi(buff[1]) * 65536 +
@@ -133,17 +132,17 @@ int				main(int argc, char **argv)
 	}
 	map = read_cub_file(argv, &var);
 	var.map = &map;
-	printf("Mapa leido y asignado\n");
+	//printf("Mapa leido y asignado\n");
 	if (argc == 3)
 		var.must_save = 1;
 	var.mlx = mlx_init();
 	var.win = mlx_new_window(var.mlx,
 		var.map->res_width, var.map->res_height, "cub3d");
-	printf("Instancia mlx iniciada\n");
+	//printf("Instancia mlx iniciada\n");
 	mlx_loop_hook(var.mlx, ray_caster, &var);
 	mlx_hook(var.win, 2, 1L<<0, camera_update, &var);
 	mlx_hook(var.win, 17, 0, x_close, &var);
 	mlx_loop(var.mlx);
-	printf("Se entró al loop\n");
+	//printf("Se entró al loop\n");
 	return (0);
 }

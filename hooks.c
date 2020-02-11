@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 19:22:53 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/07 20:08:30 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/11 12:05:42 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,8 @@ int			camera_update(int key, t_vars *var)
 
 int			x_close(t_vars *var)
 {
-	if (var->map->textures)
-		full_free((void **)var->map->textures, 4 + SPRITE_NUMBER);
-	if (var->map->val)
-		full_free((void **)var->map->val, var->map->height);
+	full_free((void **)var->map->textures, 4 + SPRITE_NUMBER);
+	full_free((void **)var->map->val, var->map->height);
 	exit(0);
 	return (0);
 }

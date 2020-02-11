@@ -6,13 +6,13 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 20:00:13 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/10 16:54:32 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/11 12:19:31 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-/*
-static void	put_pixel_texture(t_imgs *img, int i, int j, t_vars *var)
+
+static void	put_pixel_textures(t_imgs *img, int i, int j, t_vars *var)
 {
 	char	*dst;
 	int		img_w;
@@ -20,23 +20,24 @@ static void	put_pixel_texture(t_imgs *img, int i, int j, t_vars *var)
 	int		el;
 	t_imgs	textu;
 
-	printf("pixel texture called\n");
 	dst = img->addr + j * img->ll + i * (img->bpp / 8);
 	el =  0 * (var->side == 'n') + (var->side == 's') + 2 * (var->side == 'w')
 	+ 3 * (var->side == 'e');
 	textu.img = mlx_xpm_file_to_image(var->mlx, var->map->textures[el], &img_w, &img_h);
+	printf("text %d %s llamada\n", el, var->map->textures[el]);
 	textu.addr = mlx_get_data_addr(textu.img, &textu.bpp, &textu.ll, &textu.endian);
+	printf("asginamos pixel\n");
 	*(unsigned int*)dst = *(textu.addr + j * textu.ll + i * (textu.bpp / 8));
-}*/
+}
 
 static void	put_pixel_solid(t_imgs *img, int i, int j, unsigned int color)
 {
 	char	*dst;
 
-	//printf("pixel solid called\n");
+	printf("pixel solid called\n");
 	dst = img->addr + j * img->ll + i * (img->bpp / 8);
 	*(unsigned int*)dst = color;
-	printf("Pixel %d, %d asignado color %u\n", i, j, color);
+	//printf("Pixel %d, %d asignado color %u\n", i, j, color);
 }
 
 static void	set_pixel_limits(t_vars *var, double *len)
@@ -69,22 +70,22 @@ int			ray_caster(t_vars *var)
 	img.img = mlx_new_image(var->mlx,
 		var->map->res_width, var->map->res_height);
 	img.addr = mlx_get_data_addr(img.img, &img.bpp, &img.ll, &img.endian);
-	printf("Imagen del frame creada\n");
+	//printf("Imagen del frame creada\n");
 	i = -1;
 	while (++i < var->map->res_width)
 	{
 		len[0] = ray_distance(var, i);
-		printf("\tDistancia %f para rayo %d\n", len[0], i);
+		//printf("\tDistancia %f para rayo %d\n", len[0], i);
 		set_pixel_limits(var, len);
 		j = -1;
 		while (++j < (int)len[0])
-			put_pixel_solid(&img, i, j, var->map->ceiling_color);
+			put_pixel_solid(&img, i, j, 0xff0000/*var->map->ceiling_color*/);
 		while (j++ < (int)len[1])
-			put_pixel_solid(&img, i, j, 208000);
+			put_pixel_textures(&img, i, j, var);
 		while (j++ < var->map->res_height - 1)
-			put_pixel_solid(&img, i, j, var->map->floor_color);
+			put_pixel_solid(&img, i, j, 0x0000ff /*var->map->floor_color*/);
 	}
-	printf("Pusheamos la imagen a la ventana\n");
+	//printf("Pusheamos la imagen a la ventana\n");
 	mlx_put_image_to_window(var->mlx, var->win, img.img, 0, 0);
 	if (var->must_save == 1)
 		save_img(var, img.img);
