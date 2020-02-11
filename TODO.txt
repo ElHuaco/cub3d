@@ -1,0 +1,6 @@
+- Untextured
+- Textured: calculo repeticion pixeles desde textu. chica
+- sprites
+- --save
+- rehacer read, check error
+- leaks, arreglar fealdades (READ_SIZE, etc.)
