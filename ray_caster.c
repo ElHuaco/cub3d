@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 20:00:13 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/11 13:07:09 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/11 15:15:19 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	put_pixel_solid(t_imgs *img, int i, int j, unsigned int color)
 {
 	char	*dst;
 
-	//printf("pixel solid called\n");
+	//printf("pixel solid called for %d %d\n", i, j);
 	dst = img->addr + j * img->ll + i * (img->bpp / 8);
 	*(unsigned int*)dst = color;
 	//printf("Pixel %d, %d asignado color %u\n", i, j, color);
@@ -42,12 +42,18 @@ static void	put_pixel_solid(t_imgs *img, int i, int j, unsigned int color)
 
 static void	set_pixel_limits(t_vars *var, double *len)
 {
-	len[1] = var->map->res_height / len[0];
-	len[2] = len[1];
-	len[0] = (int)((-1 * len[2] + var->map->res_height) / 2);
-	if (len[0] < 0)
-		len[0] = 0;
-	len[1] = (int)((len[2] + var->map->res_height) / 2);
+	if (fabs(len[0] - 0.0) < 10e-7)
+	{
+		len[2] = 0;
+		len[1] = var->map->res_height - 1;
+	}
+	else
+	{
+		len[2] = (int)((0.5 * var->map->res_height) * (1.0 - 1 / len[0]));
+		len[1] = (int)((0.5 * var->map->res_height) * (1.0 + 1 / len[0]));
+	}
+	if (len[2] < 0)
+		len[2] = 0;
 	if (len[1] >= var->map->res_height)
 		len[1] = var->map->res_height - 1;
 	//printf("\tPixeles cota: %d, %d\n", (int)len[0], (int)len[1]);
@@ -78,7 +84,10 @@ int			ray_caster(t_vars *var)
 		//printf("\tDistancia %f para rayo %d\n", len[0], i);
 		set_pixel_limits(var, len);
 		j = -1;
-		while (++j < (int)len[0])
+		//printf("\tPutting ceiling till %d\n", (int)len[2]);
+		//printf("\tPutting wall till %d\n", (int)len[1]);
+		//printf("\tPutting floor till %d\n", var->map->res_height - 1);
+		while (++j < (int)len[2])
 			put_pixel_solid(&img, i, j, 0xff0000/*var->map->ceiling_color*/);
 		while (j++ < (int)len[1])
 			put_pixel_solid(&img, i, j, 0x00ff00);

@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 15:16:50 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/10 15:58:09 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/11 15:17:48 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include <stdio.h>
 # include <fcntl.h>
 
-# define FOV M_PI / 3.0
+# define FOV M_PI / 6.0
 # define SPRITE_NUMBER 1
 # define READ_SIZE 50
 # define PI M_PI
