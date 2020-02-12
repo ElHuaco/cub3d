@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 15:16:50 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/12 16:10:11 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/12 16:57:04 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <fcntl.h>
 
 # define FOV M_PI / 2.0
+# define CAM_VEL 0.1
 # define SPRITE_NUMBER 1
 # define READ_SIZE 50
 # define PI M_PI
