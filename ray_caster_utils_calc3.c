@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 14:47:25 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/10 11:26:18 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/12 15:25:08 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void		phi_pi_half_calc(t_vars *var, int *map_cell, double *dist)
 	dist[2] = INFINITY;
 	dist[5] = 0.0;
 	dist[3] = map_cell[1] + 1.0 - var->y;
-	dist[6] = 1.0;	
+	dist[6] = -1.0;	
 }
 
 void		phi_pi_calc(t_vars *var, int *map_cell, double *dist)
@@ -41,5 +41,5 @@ void		phi_three_pi_half_calc(t_vars *var, int *map_cell, double *dist)
 	dist[2] = INFINITY;;
 	dist[5] = 0.0;
 	dist[3] = -1 * map_cell[1] + var->y;
-	dist[6] = -1.0;	
+	dist[6] = 1.0;	
 }

@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 18:14:43 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/10 11:49:07 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/12 13:50:49 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,9 @@ void		find_player_pos(t_maps *map, t_vars *var)
 			}
 		}
 	}
+	j = (int)var->x;
+	i = (int)var->y;
+	var->sigma = 0.0 * (map->val[i][j] == 'E') + PI2 * (map->val[i][j] == 'N')
+		+ PI * (map->val[i][j] == 'W') + _3PI2 * (map->val[i][j] == 'S');
+	map->val[i][j] = '0';
 }

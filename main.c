@@ -6,12 +6,12 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/31 12:52:52 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/11 12:11:07 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/12 13:51:21 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-#include "libc.h"
+
 static char		*check_map_error(char **map)
 {
 	int		player_pos;
@@ -74,7 +74,6 @@ static void		init_player_map_param(t_maps *map, t_vars *var, char **lines)
 {
 	int		n;
 	int		i;
-	int		j;
 
 	n = ft_arrlen(lines);
 	map->val = malloc(sizeof(char *) * (n + 1));
@@ -85,10 +84,6 @@ static void		init_player_map_param(t_maps *map, t_vars *var, char **lines)
 	map->height = n;
 	map->width = ft_strlen(map->val[0]);
 	find_player_pos(map, var);
-	j = (int)var->x;
-	i = (int)var->y;
-	var->sigma = 0.0 * (map->val[i][j] == 'E') + PI2 * (map->val[i][j] == 'N')
-		+ PI * (map->val[i][j] == 'W') + _3PI2 * (map->val[i][j] == 'S');
 }
 
 static t_maps	read_cub_file(char **argv, t_vars *var)

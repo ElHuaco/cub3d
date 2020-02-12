@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 19:22:53 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/11 16:04:27 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/12 13:54:09 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,6 @@
 
 int			camera_update(int key, t_vars *var)
 {
-	//double	n_y;
-	//double	n_x;
-
-	//Modifica sigma, x, y, para llamar a ray_caster de nuevo
 	if (key == ESC)
 		return (x_close(var));
 	else if (key == RIGHT || key == D)
@@ -26,14 +22,25 @@ int			camera_update(int key, t_vars *var)
 		var->sigma -= 0.05;
 	else if (key == UP || key == W || key == S || key == DOWN)
 	{
-		var->y -= sin(var->sigma + PI * (key == S || key == DOWN)) * 0.05;
-		var->x += cos(var->sigma + PI * (key == S || key == DOWN)) * 0.05;
+		var->y -= sin(var->sigma + PI * (key == S || key == DOWN)) * 0.1;
+		var->x += cos(var->sigma + PI * (key == S || key == DOWN)) * 0.1;
+	//	printf("Nuevas coord serian %f %f\n", var->x, var->y);
+	//	printf("\tDe celda %d %d: %c\n", (int)var->x, (int)var->y,
+	//		var->map->val[(int)var->y][(int)var->x]);
 	}
-	if (var->sigma >= _2PI)
-		var->sigma -= _2PI;
-	else if (var->sigma <= -1* _2PI)
-		var->sigma += _2PI;
-	ray_caster(var);
+	if (((fabs(var->sigma) - _2PI) < 10e-7) || (fabs(var->sigma) > _2PI))
+		var->sigma += (var->sigma < 0) ? _2PI : -1* _2PI;
+	if (var->map->val[(int)var->y][(int)var->x] == '0')
+	{
+	//	printf("Nuevo frame para %f %f\n", var->x, var->y);
+	//	printf("\tLimites mapa %d %d\n", var->map->width, var->map->height);
+		ray_caster(var);
+	}
+	else
+	{
+		var->y += sin(var->sigma + PI * (key == S || key == DOWN)) * 0.1;
+		var->x -= cos(var->sigma + PI * (key == S || key == DOWN)) * 0.1;
+	}
 	return (0);
 }
 

@@ -1,5 +1,5 @@
-- Untextured
-- Textured: calculo repeticion pixeles desde textu. chica
+- Untextured: esquinas(clipping, bouncing), sudden wall evaporation, ojo pez, leaks.
+- Textured: calculo repeticion pixeles desde texturas chicas (perspectiva para ellas)
 - sprites
 - --save
 - rehacer read, check error

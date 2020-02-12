@@ -6,29 +6,37 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 20:00:13 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/11 15:37:41 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/12 15:26:08 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-/*
+
 static void	put_pixel_textures(t_imgs *img, int i, int j, t_vars *var)
 {
 	char	*dst;
-	int		img_w;
-	int		img_h;
-	int		el;
-	t_imgs	textu;
+//	int		img_w;
+//	int		img_h;
+//	int		el;
+//	t_imgs	textu;
 
 	dst = img->addr + j * img->ll + i * (img->bpp / 8);
-	el =  0 * (var->side == 'n') + (var->side == 's') + 2 * (var->side == 'w')
-	+ 3 * (var->side == 'e');
-	textu.img = mlx_xpm_file_to_image(var->mlx, var->map->textures[el], &img_w, &img_h);
-	printf("text %d %s llamada\n", el, var->map->textures[el]);
-	textu.addr = mlx_get_data_addr(textu.img, &textu.bpp, &textu.ll, &textu.endian);
-	printf("asginamos pixel\n");
-	*(unsigned int*)dst = *(textu.addr + j * textu.ll + i * (textu.bpp / 8));
-}*/
+//	el =  0 * (var->side == 'n') + (var->side == 's') + 2 * (var->side == 'w')
+//	+ 3 * (var->side == 'e');
+//	textu.img = mlx_xpm_file_to_image(var->mlx, var->map->textures[el], &img_w, &img_h);
+//	printf("text %d %s llamada\n", el, var->map->textures[el]);
+//	textu.addr = mlx_get_data_addr(textu.img, &textu.bpp, &textu.ll, &textu.endian);
+//	printf("asginamos pixel\n");
+//	*(unsigned int*)dst = *(textu.addr + j * textu.ll + i * (textu.bpp / 8));
+	if (var->side == 'n')
+		*(unsigned int*)dst = 0x00ff00;
+	if (var->side == 's')
+		*(unsigned int*)dst = 0x008000;
+	else if (var->side == 'w')
+		*(unsigned int*)dst = 0xffff00;
+	else if (var->side == 'e')
+		*(unsigned int*)dst = 0xdaa520;
+}
 
 static void	put_pixel_solid(t_imgs *img, int i, int j, unsigned int color)
 {
@@ -87,10 +95,10 @@ int			ray_caster(t_vars *var)
 		//printf("\tPutting ceiling till %d\n", (int)len[2]);
 		//printf("\tPutting wall till %d\n", (int)len[1]);
 		//printf("\tPutting floor till %d\n", var->map->res_height - 1);
-		while (++j <= (int)len[2])
+		while (++j < (int)len[2])
 			put_pixel_solid(&img, i, j, 0xff0000/*var->map->ceiling_color*/);
 		while (j < (int)len[1])
-			put_pixel_solid(&img, i, j++, 0x00ff00);
+			put_pixel_textures(&img, i, j++, var);
 		while (j < var->map->res_height - 1)
 			put_pixel_solid(&img, i, j++, 0x0000ff /*var->map->floor_color*/);
 	}
