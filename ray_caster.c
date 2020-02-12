@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 20:00:13 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/12 15:26:08 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/12 16:13:22 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ int			ray_caster(t_vars *var)
 	//printf("Pusheamos la imagen a la ventana\n");
 	mlx_put_image_to_window(var->mlx, var->win, img.img, 0, 0);
 	mlx_destroy_image(var->win, img.img);
+	//printf("sigma : %f\n", var->sigma * 180.0 / PI);
 	if (var->must_save == 1)
 		save_img(var, img.img);
 	return (0);
