@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 17:39:16 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/12 15:25:48 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/18 12:07:00 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,10 @@ double		ray_distance(t_vars *var, int col)
 {
 	double		phi;
 	double		dist[7];
-	int			map_cell[3];
+	int			map_cell[2];
 
-	phi = var->sigma - FOV / 2 + (FOV / (double)var->map->res_width) * col;
+	phi = var->sigma + atan(tan(FOV/ 2.0)
+		* (2.0 * col / var->map->res_width - 1.0));
 	//printf("Player en %f %f\n", var->x, var->y);
 	map_cell[0] = (int)var->x;
 	map_cell[1] = (int)var->y;
@@ -75,14 +76,20 @@ double		ray_distance(t_vars *var, int col)
 		dist[1] = (fabs(phi - 0.0) < 10e-7) ? -1 * INFINITY : INFINITY;
 	else
 		dist[1] = -1 / sin(phi);
-	//printf("Rayo %d con %f-> sec: %f ->cosec: %f\n", col, phi * 180 / PI, dist[0], dist[1]);
+//printf("Rayo %d con %f-> sec: %f ->cosec: %f\n", col, phi * 180 / PI, dist[0], dist[1]);
 	cuad_calc(var, phi, map_cell, dist);
 	cast_till_wall(var, map_cell, dist);
 	choose_a_side(var, phi);
-	//printf("\tMuro en %d %d, cara %c, para rayo %d\n", map_cell[0], map_cell[1], var->side, col);
+//printf("\tMuro en %d %d, cara %c, para rayo %d\n", map_cell[0], map_cell[1], var->side, col);
 	if (var->side == 'w' || var->side == 'e')
-		dist[4] = dist[0] * (map_cell[0] - var->x + (1.0 - dist[5]) / 2.0);
+	{	//dist[4] = dist[0] * (map_cell[0] - var->x + (1.0 - dist[5]) / 2.0);
+		dist[4] = cos(phi - var->sigma) * dist[0] * (map_cell[0] - var->x
+			+ (1.0 - dist[5]) / 2.0) / tan(FOV / 2.0);
+	}
 	else if (var->side == 'n' || var->side == 's')
-		dist[4] = dist[1] * (map_cell[1] - var->y + (1.0 - dist[6]) / 2.0);
+	{	//dist[4] = dist[1] * (map_cell[1] - var->y + (1.0 - dist[6]) / 2.0);
+		dist[4] = cos(phi - var->sigma) * dist[1] * (map_cell[1] - var->y
+			+ (1.0 - dist[6]) /2.0) / tan(FOV / 2.0);
+	}
 	return (dist[4]);
 }

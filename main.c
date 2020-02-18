@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/31 12:52:52 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/12 13:51:21 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/17 12:48:36 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ int				main(int argc, char **argv)
 		|| (argc == 1) || (argc > 3))
 	{
 		perror("Error: wrong argument format.\n");
-		exit(1);
+		return(1);
 	}
 	map = read_cub_file(argv, &var);
 	var.map = &map;
@@ -131,11 +131,15 @@ int				main(int argc, char **argv)
 	if (argc == 3)
 		var.must_save = 1;
 	var.mlx = mlx_init();
+	if (!var.mlx)
+		return (1);
 	var.win = mlx_new_window(var.mlx,
 		var.map->res_width, var.map->res_height, "cub3d");
+	if (!var.win)
+		return (1);
 	//printf("Instancia mlx iniciada\n");
-	mlx_loop_hook(var.mlx, ray_caster, &var);
-	mlx_hook(var.win, 2, 1L<<0, camera_update, &var);
+	mlx_hook(var.win, 1, 0, ray_caster, &var);
+	mlx_hook(var.win, 2, 1L<<1, camera_update, &var);
 	mlx_hook(var.win, 17, 0, x_close, &var);
 	mlx_loop(var.mlx);
 	//printf("Se entró al loop\n");

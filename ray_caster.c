@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 20:00:13 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/12 16:13:22 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/18 10:48:27 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@ static void	put_pixel_textures(t_imgs *img, int i, int j, t_vars *var)
 	if (var->side == 'n')
 		*(unsigned int*)dst = 0x00ff00;
 	if (var->side == 's')
-		*(unsigned int*)dst = 0x008000;
+		*(unsigned int*)dst = 0xff0000;
 	else if (var->side == 'w')
-		*(unsigned int*)dst = 0xffff00;
+		*(unsigned int*)dst = 0x0000ff;
 	else if (var->side == 'e')
-		*(unsigned int*)dst = 0xdaa520;
+		*(unsigned int*)dst = 0xffff00;
 }
 
 static void	put_pixel_solid(t_imgs *img, int i, int j, unsigned int color)
@@ -57,8 +57,9 @@ static void	set_pixel_limits(t_vars *var, double *len)
 	}
 	else
 	{
-		len[2] = (int)((0.5 * var->map->res_height) * (1.0 - 1 / len[0]));
-		len[1] = (int)((0.5 * var->map->res_height) * (1.0 + 1 / len[0]));
+		//Cambiar la cte 0.5 para efecto arriba abajo
+		len[2] = (int)((0.5 * var->map->res_height) * (1.0 - 2.0 / len[0]));
+		len[1] = (int)((0.5 * var->map->res_height) * (1.0 + 2.0 / len[0]));
 	}
 	if (len[2] < 0)
 		len[2] = 0;
@@ -96,11 +97,11 @@ int			ray_caster(t_vars *var)
 		//printf("\tPutting wall till %d\n", (int)len[1]);
 		//printf("\tPutting floor till %d\n", var->map->res_height - 1);
 		while (++j < (int)len[2])
-			put_pixel_solid(&img, i, j, 0xff0000/*var->map->ceiling_color*/);
+			put_pixel_solid(&img, i, j, 0x000000/*var->map->ceiling_color*/);
 		while (j < (int)len[1])
 			put_pixel_textures(&img, i, j++, var);
 		while (j < var->map->res_height - 1)
-			put_pixel_solid(&img, i, j++, 0x0000ff /*var->map->floor_color*/);
+			put_pixel_solid(&img, i, j++, 0x000000 /*var->map->floor_color*/);
 	}
 	//printf("Pusheamos la imagen a la ventana\n");
 	mlx_put_image_to_window(var->mlx, var->win, img.img, 0, 0);
