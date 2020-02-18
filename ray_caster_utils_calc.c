@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 17:39:16 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/18 12:07:00 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/18 12:19:26 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,12 +84,12 @@ double		ray_distance(t_vars *var, int col)
 	if (var->side == 'w' || var->side == 'e')
 	{	//dist[4] = dist[0] * (map_cell[0] - var->x + (1.0 - dist[5]) / 2.0);
 		dist[4] = cos(phi - var->sigma) * dist[0] * (map_cell[0] - var->x
-			+ (1.0 - dist[5]) / 2.0) / tan(FOV / 2.0);
+			+ (1.0 - dist[5]) / 2.0);
 	}
-	else if (var->side == 'n' || var->side == 's')
+	else
 	{	//dist[4] = dist[1] * (map_cell[1] - var->y + (1.0 - dist[6]) / 2.0);
 		dist[4] = cos(phi - var->sigma) * dist[1] * (map_cell[1] - var->y
-			+ (1.0 - dist[6]) /2.0) / tan(FOV / 2.0);
+			+ (1.0 - dist[6]) /2.0);
 	}
 	return (dist[4]);
 }

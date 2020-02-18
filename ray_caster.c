@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 20:00:13 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/18 10:48:27 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/18 12:15:02 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ static void	set_pixel_limits(t_vars *var, double *len)
 	else
 	{
 		//Cambiar la cte 0.5 para efecto arriba abajo
-		len[2] = (int)((0.5 * var->map->res_height) * (1.0 - 2.0 / len[0]));
-		len[1] = (int)((0.5 * var->map->res_height) * (1.0 + 2.0 / len[0]));
+		len[2] = (int)((0.5 * var->map->res_height) * (1.0 - 1.0 / len[0]));
+		len[1] = (int)((0.5 * var->map->res_height) * (1.0 + 1.0 / len[0]));
 	}
 	if (len[2] < 0)
 		len[2] = 0;
