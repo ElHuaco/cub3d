@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 15:16:50 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/19 13:08:35 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/19 15:46:56 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ typedef struct		s_vars
 	double			x;
 	double			y;
 	char			side;
-	int				*ray_hit;
+	double			*ray_hit;
 	int				must_save;
 }					t_vars;
 
@@ -77,6 +77,8 @@ typedef struct		s_img
 	int				bpp;
 	int				ll;
 	int				endian;
+	int				img_w;
+	int				img_h;
 }					t_imgs;
 
 /*
