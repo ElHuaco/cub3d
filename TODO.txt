@@ -1,6 +1,2 @@
 - Untextured: leaks.
-- Textured: calculo repeticion pixeles desde texturas chicas (perspectiva para ellas)
-- sprites
-- --save
-- rehacer read, check error
-- leaks, arreglar fealdades (READ_SIZE, etc.)
+- Textured: fixear calculo columna texturfixear calculo columna texturades (READ_SIZE, etc.)
