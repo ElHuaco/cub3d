@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 15:16:50 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/18 12:14:09 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/19 13:08:35 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ typedef struct		s_maps
 	char			**textures;
 	unsigned int	floor_color;
 	unsigned int	ceiling_color;
+	int				*wall_linelength;
+	int				*wall_start;
 }					t_maps;
 
 typedef struct		s_vars
@@ -64,6 +66,7 @@ typedef struct		s_vars
 	double			x;
 	double			y;
 	char			side;
+	int				*ray_hit;
 	int				must_save;
 }					t_vars;
 
@@ -126,5 +129,5 @@ int		check_player_pos_error(char **m, int i, int *count);
 
 void	find_player_pos(t_maps *map, t_vars *var);
 void	full_free(void **buff, int arr_len);
-
+void	save_img(t_vars *var, void *img);
 #endif

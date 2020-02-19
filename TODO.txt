@@ -1,4 +1,4 @@
-- Untextured: esquinas(clipping), ojo pez, leaks.
+- Untextured: leaks.
 - Textured: calculo repeticion pixeles desde texturas chicas (perspectiva para ellas)
 - sprites
 - --save

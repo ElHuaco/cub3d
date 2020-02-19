@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 17:39:16 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/18 12:19:26 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/19 12:50:31 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,11 +85,13 @@ double		ray_distance(t_vars *var, int col)
 	{	//dist[4] = dist[0] * (map_cell[0] - var->x + (1.0 - dist[5]) / 2.0);
 		dist[4] = cos(phi - var->sigma) * dist[0] * (map_cell[0] - var->x
 			+ (1.0 - dist[5]) / 2.0);
+		var->ray_hit[col] = (int)(var->y - map_cell[1] + dist[4] * sin(phi));
 	}
 	else
 	{	//dist[4] = dist[1] * (map_cell[1] - var->y + (1.0 - dist[6]) / 2.0);
 		dist[4] = cos(phi - var->sigma) * dist[1] * (map_cell[1] - var->y
 			+ (1.0 - dist[6]) /2.0);
-	}
+		var->ray_hit[col] = (int)(var->x - map_cell[0] + dist[4] * cos(phi));
+		}
 	return (dist[4]);
 }

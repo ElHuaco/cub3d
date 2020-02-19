@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 19:22:53 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/18 12:08:00 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/18 16:24:20 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int			x_close(t_vars *var)
 {
 	full_free((void **)var->map->textures, 4 + SPRITE_NUMBER);
 	full_free((void **)var->map->val, var->map->height);
+	full_free((void **)var->ray_hit, var->map->res_width);
 	exit(0);
 	return (0);
 }
