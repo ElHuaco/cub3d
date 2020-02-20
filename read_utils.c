@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 16:15:52 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/04 18:26:59 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/20 15:57:21 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ char		*skip_spaces(char *str)
 	i = -1;
 	while (str[++i])
 	{
-		if (str[i] == ' ')
+		if (str[i] != ' ')
 			count++;
 	}
-	result = malloc(sizeof(char) * (count + 2));
-	result[count + 1] = 0;
+	result = malloc(sizeof(char) * (count + 1));
+	result[count] = 0;
 	count = -1;
 	i = -1;
 	while (str[++i])

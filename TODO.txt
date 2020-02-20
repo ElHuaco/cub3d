@@ -1,2 +1,6 @@
-- Untextured: leaks.
-- Textured: fixear calculo columna texturfixear calculo columna texturades (READ_SIZE, etc.)
+- rehacer read cub files con malloc bien. Es causa de leaks y crashes.
+- Textured: fixear sliding.
+- Sprites
+- --save
+- read cub files
+- leaks, eficiencia
