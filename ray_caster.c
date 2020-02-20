@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 20:00:13 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/19 17:31:15 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/20 11:05:17 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@ static void	put_pixel_textures(t_imgs *img, int i, int j, t_vars *var)
 		+ 3 * (var->side == 'e')]);*/
 	side = 1 * (var->side == 'n') + 2 * (var->side == 's')
 		+ 3 * (var->side == 'w') + 4 * (var->side == 'e');
-	corresp_texel_coord[0] = (int)(img[side].img_w * var->ray_hit[i]);
-   	corresp_texel_coord[1] = (int)(img[side].img_h * (j - var->map->wall_start[i]) / var->map->wall_linelength[i]);
+	corresp_texel_coord[0] = img[side].img_w * var->ray_hit[i];
+	corresp_texel_coord[1] = img[side].img_h * (j - var->map->wall_start[i]) / var->map->wall_linelength[i]; 
 	//printf("\timg dim %d %d\n", img[side].img_w, img[side].img_h);
 	//printf("\twall_linelength: %d\n", var->map->wall_linelength[i]);
-//	printf("Col relat: %f Row relat: %f\n", var->ray_hit[i], (double)((j - var->map->wall_start[i])) / var->map->wall_linelength[i]);
+	//printf("Col relat: %f Row relat: %f\n", var->ray_hit[i], (double)((j - var->map->wall_start[i])) / var->map->wall_linelength[i]);
 	//printf("\tasignamos texel %d %d a pixel %d %d\n", corresp_texel_coord[0], corresp_texel_coord[1], i, j);
 	dst = img[0].addr + j * img[0].ll + i * (img[0].bpp / 8);
-	*(unsigned int*)dst = *(img[side].addr
+	*(unsigned int*)dst = *(unsigned int*)(img[side].addr
 		+ corresp_texel_coord[1] * img[side].ll
 		+ corresp_texel_coord[0] * (img[side].bpp / 8));
 }
@@ -40,7 +40,7 @@ static void	put_pixel_solid(t_imgs *img, int i, int j, unsigned int color)
 
 	//printf("pixel solid called for %d %d\n", i, j);
 	dst = img[0].addr + j * img[0].ll + i * (img[0].bpp / 8);
-	*(unsigned int*)dst = color;
+	*(unsigned int *)dst = color;
 	//printf("Pixel %d, %d asignado color %u\n", i, j, color);
 }
 
@@ -56,6 +56,8 @@ static void	set_pixel_limits(t_vars *var, double *len)
 		len[2] = (int)((0.5 * var->map->res_height) * (1.0 - 1.0 / len[0]));
 		len[1] = (int)((0.5 * var->map->res_height) * (1.0 + 1.0 / len[0]));
 	}
+	len[3] = len[2];
+	len[4] = len[1];
 	if (len[2] < 0)
 		len[2] = 0;
 	if (len[1] >= var->map->res_height)
@@ -67,7 +69,7 @@ int			ray_caster(t_vars *var)
 {
 	int		i;
 	int		j;
-	double	len[3]; //Al introducir var->ray_len, len[2]
+	double	len[5]; //Al introducir var->ray_len, len[2]
 	t_imgs	img[1 + 4 + SPRITE_NUMBER];
 
 	img[0].img = mlx_new_image(var->mlx,
@@ -91,18 +93,18 @@ int			ray_caster(t_vars *var)
 		len[0] = ray_distance(var, i);
 		//printf("\tDistancia %f para rayo %d\n", len[0], i);
 		set_pixel_limits(var, len);
-		var->map->wall_linelength[i] = (int)len[1] - (int)len[2];
-		var->map->wall_start[i] = (int)len[2];
+		var->map->wall_linelength[i] = (int)len[4] - (int)len[3];
+		var->map->wall_start[i] = (int)len[3];
 		j = -1;
 		//printf("\tPutting ceiling till %d\n", (int)len[2]);
 		//printf("\tPutting wall till %d\n", (int)len[1]);
 		//printf("\tPutting floor till %d\n", var->map->res_height - 1);
 		while (++j < (int)len[2])
-			put_pixel_solid(img, i, j, 0xaaaaaa/*var->map->ceiling_color*/);
+			put_pixel_solid(img, i, j, 0xaaaaaa);
 		while (j < (int)len[1])
 			put_pixel_textures(img, i, j++, var);
 		while (j < var->map->res_height - 1)
-			put_pixel_solid(img, i, j++, 0xaaaaaa /*var->map->floor_color*/);
+			put_pixel_solid(img, i, j++, 0xaaaaaa);
 	}
 	//printf("Pusheamos la imagen a la ventana\n");
 	mlx_put_image_to_window(var->mlx, var->win, img[0].img, 0, 0);
