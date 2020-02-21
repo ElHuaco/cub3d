@@ -6,66 +6,17 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 16:15:52 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/20 15:57:21 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/21 16:31:40 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-char		*skip_spaces(char *str)
-{
-	int		i;
-	int		count;
-	char	*result;
-
-	count = 0;
-	i = -1;
-	while (str[++i])
-	{
-		if (str[i] != ' ')
-			count++;
-	}
-	result = malloc(sizeof(char) * (count + 1));
-	result[count] = 0;
-	count = -1;
-	i = -1;
-	while (str[++i])
-	{
-		if (str[i] != ' ')
-			result[++count] = str[i];
-	}
-	return (result);
-}
 
 int			is_cub_file_chr(int c)
 {
 	if ((c == 'W') || (c == 'E') || (c == 'N') || (c == 'S')
 		|| (c == 'N') || (c == '0') || (c == '1') || (c == '2')
 		|| (c == ' '))
-		return (1);
-	else
-		return (0);
-}
-
-int			check_wall_error(char *line, int *i)
-{
-	if (((i[0] == i[4]) || (i[0] == i[2] - 1))
-		&& ((line[i[3]] != '1') && (line[i[3]] != ' ')))
-		return (1);
-	else if (((i[0] != i[4]) && (i[0] != i[2] - 1))
-		&& ((ft_strchr(line, '1') != line)
-		|| (ft_strrchr(line, '1') != line + i[1] - 1)))
-		return (1);
-	else
-		return (0);
-}
-
-int			check_player_pos_error(char **m, int i, int *count)
-{
-	if ((ft_strchr(m[i], 'N')) || (ft_strchr(m[i], 'S'))
-		|| (ft_strchr(m[i], 'W')) || (ft_strchr(m[i], 'E')))
-		*count += 1;
-	if (!(m[i + 1]) && (*count != 1))
 		return (1);
 	else
 		return (0);
@@ -78,4 +29,77 @@ int			is_player_pos(int c)
 		return (1);
 	else
 		return (0);
+}
+
+int			read_floor_ceil_color(t_maps *map, char *buff, int i)
+{
+	int		j;
+	int		ceil_or_floor_bool;
+	int		r;
+	int		g;
+	int		b;
+
+	ceil_or_floor_bool = (buff[i] == 'F') ? 0 : 1;
+	while (buff[++i] == ' ');
+	r = ft_atoi(buff + i) * 65536;
+	j = -1;
+	while (ft_isnum(buff[i + ++j]));
+	i += j + 1;
+	g = ft_atoi(buff + i) * 256;
+	j = 0;
+	while (ft_isnum(buff[i + ++j]));
+	i += j + 1;
+	b = ft_atoi(buff + i);
+	if ((r < 0) || (g < 0) || (b < 0))
+		error_exit(EINFO);
+	if (!ceil_or_floor_bool)
+		map->floor_color = r + g + b;
+	else
+		map->ceiling_color = r + g + b;
+	return (i + digit_number(b, 10));
+}
+
+int			read_res(t_maps *map, char *buff, int i)
+{
+	int		j;
+
+	while (buff[++i] == ' ');
+	j = -1;
+	while (ft_isnum(buff[i + ++j]));
+	map->res_height = ft_atoi(buff + i);
+	i += j;
+	while (buff[i++] == ' ');
+	j = 0;
+	while (ft_isnum(buff[i + j++]));
+	map->res_width = ft_atoi(buff + i);
+	if ((map->res_width <= 0) || (map->res_height <= 0))
+		error_exit(EINFO);
+	return (i + j);
+}
+
+int			read_text_path(t_maps *map, char *buff, int i)
+{
+	int		j;
+	int		k;
+
+	j = i;
+	if ((buff[i] != 'S') && (buff[++i] != 'O'))
+		error_exit(EINFO);
+	while (buff[++i] == ' ');
+	k = i;
+	if ((buff[i] != '.') || (buff[i + 1] != '/'))
+		error_exit(EINFO);
+	while (buff[i++] != '\n');
+	buff[i] = 0;
+	if (buff[j] == 'N')
+		map->north = ft_strdup(buff + k);
+	else if ((buff[j] == 'S') && (buff[j + 1] == 'O'))
+		map->south = ft_strdup(buff + k);
+	else if (buff[j] == 'W')
+		map->west = ft_strdup(buff + k);
+	else if (buff[j] == 'E')
+		map->east = ft_strdup(buff + k);
+	else
+		map->sprite = ft_strdup(buff + k);
+	return (i + 1);
 }

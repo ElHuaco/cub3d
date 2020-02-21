@@ -6,118 +6,95 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/31 12:52:52 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/17 12:48:36 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/21 16:32:28 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static char		*check_map_error(char **map)
+static int		read_map_params(t_maps *map, char *buff)
 {
-	int		player_pos;
-	int		i[5];
+	int		i;
 
-	i[1] = ft_strlen(map[SPRITE_NUMBER + 7]);
-	player_pos = 0;
-	i[2] = ft_arrlen(map);
-	i[4] = SPRITE_NUMBER + 7;
-	i[0] = i[4] - 1;
-	while (++i[0] < i[2])
+	i = 0;
+	while (buff[i])
 	{
-		if (check_player_pos_error(map, i[0], &player_pos))
-			return (EPLAPOS);
-		if ((int)ft_strlen(map[i[0]]) != i[1])
-			return (ELINELEN);
-		i[3] = 0;
-		while (map[i[0]][i[3]])
+		if (buff[i] == 'R')
+			i = read_res(map, buff, i);
+		else if ((buff[i] == 'F') || (buff[i] == 'C'))
+			i = read_floor_ceil_color(map, buff, i);
+		else if ((buff[i] == 'N') || (buff[i] == 'S') || (buff[i] == 'W')
+			|| (buff[i] == 'E'))
+			i = read_text_path(map, buff, i);
+		else
+			error_exit(EINFO);
+	}
+	if (!(map->north) || !(map->south)
+		|| !(map->west) || !(map->east) || !(map->sprite))
+		error_exit(EINFO);
+	return (i);
+}
+
+static void		read_map_values(t_maps *map, char *buff)
+{
+	int		i;
+	int		j;
+	int		pla_pos_count;
+
+	pla_pos_count = 0;
+	map->val = ft_split(buff, '\n');
+	map->height = ft_arrlen(map->val);
+	map->width = ft_strlen(map->val[0]);
+	i = -1;
+	while (++i < map->height)
+	{
+		j = -1;
+		while (++j < map->width)
 		{
-			if (!(is_cub_file_chr(map[i[0]][i[3]])))
-				return (ENONCHR);
-			if (check_wall_error(map[i[0]], i))
-				return (ENOTCLO);
-			i[3] += 1;
+			if ((is_cub_file_chr(map->val[i][j])) == 0)
+				error_exit(ENONCHR);
+			if (((map->val[i][0] != '1')
+				|| (map->val[i][map->height - 1] != '1'))
+				|| ((!i || (i == map->height)) && (map->val[i][j] != '1')))
+				error_exit(ENOTCLO);
+			pla_pos_count += is_player_pos(map->val[i][j]) ? 1 : 0;
+			if (pla_pos_count > 1)
+				error_exit(EPLAPOS);
 		}
 	}
-	return (0);
 }
 
-static int		init_map_textures(t_maps *map, char **lines)
+static void		read_cub_file(char **argv, t_vars *var)
 {
-	char	**buff;
-	int		i;
-
-	buff = ft_split(lines[0], ' ');
-	map->res_height = ft_atoi(buff[2]);
-	map->res_width = ft_atoi(buff[1]);
-	full_free((void **)buff, 3);
-	map->textures = malloc(sizeof(char *) * (4 + SPRITE_NUMBER + 1));
-	i = 0;
-	while ((*(*(buff = ft_split(lines[++i], ' ')))) != 'F')
-	{
-		map->textures[i - 1] = buff[1];
-		free(buff[0]);
-	}
-	map->textures[i] = 0;
-	map->floor_color = ft_atoi(buff[1]) * 65536 +
-		ft_atoi(ft_strchr(buff[1], ',') + 1)
-		* 256 + ft_atoi(ft_strrchr(buff[1], ','));
-	full_free((void **)buff, 2);
-	buff = ft_split(lines[i + 1], ' ');
-	map->ceiling_color = ft_atoi(buff[1]) * 65536 +
-		ft_atoi(ft_strchr(buff[1], ',') + 1)
-		* 256 + ft_atoi(ft_strrchr(buff[1], ','));
-	full_free((void **)buff, 2);
-	return (i + 2);
-}
-
-static void		init_player_map_param(t_maps *map, t_vars *var, char **lines)
-{
-	int		n;
-	int		i;
-
-	n = ft_arrlen(lines);
-	map->val = malloc(sizeof(char *) * (n + 1));
-	i = -1;
-	while (++i < n)
-		map->val[i] = skip_spaces(lines[i]);
-	map->val[i] = 0;
-	map->height = n;
-	map->width = ft_strlen(map->val[0]);
-	find_player_pos(map, var);
-}
-
-static t_maps	read_cub_file(char **argv, t_vars *var)
-{
+	t_maps	map;
+	char	*buff;
 	int		fd;
-	char	*line;
-	char	**map;
-	t_maps	result;
 	int		i;
 
-	if (((fd = open(argv[1], O_RDONLY)) == -1)
-		|| !(map = malloc(sizeof(char *) * READ_SIZE)))
-		exit(1);
-	i = -1;
-	while ((get_next_line(fd, &line)) > 0)
-		map[++i] = line;
-	free(line);
-	map[++i] = 0;
-	if ((line = check_map_error(map)))
+	if ((fd = open(argv[1], O_RDONLY) < 0))
+		error_exit(EOPEN);
+	i = 0;
+	buff = malloc(sizeof(char) * 1);
+	while ((read(fd, buff, 1)) > 0)
 	{
-		perror("Error\n");
-		perror(line);
-		exit(1);
+		free(buff);
+		i++;
 	}
-	i = init_map_textures(&result, map);
-	init_player_map_param(&result, var, map + i);
-	full_free((void **)map, READ_SIZE);
-	return (result);
+	free(buff);
+	close(fd);
+	if ((fd = open(argv[1], O_RDONLY) < 0))
+		error_exit(EOPEN);
+	buff = malloc(sizeof(char) * (i + 1));
+	buff[i] = 0;
+	read(fd, buff, i);
+	i = read_map_params(&map, buff);
+	read_map_values(&map, buff + i);
+	var->map = &map;
 }
 
 int				main(int argc, char **argv)
 {
 	t_vars	var;
-	t_maps	map;
 
 	if (((argc == 3) && (ft_strcmp(argv[2], "--save")))
 		|| (argc == 1) || (argc > 3))
@@ -125,8 +102,7 @@ int				main(int argc, char **argv)
 		perror("Error: wrong argument format.\n");
 		return(1);
 	}
-	map = read_cub_file(argv, &var);
-	var.map = &map;
+	read_cub_file(argv, &var);
 	//printf("Mapa leido y asignado\n");
 	if (argc == 3)
 		var.must_save = 1;

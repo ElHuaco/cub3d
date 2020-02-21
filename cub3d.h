@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 15:16:50 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/20 12:15:55 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/21 15:50:34 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,24 @@
 # define S 1
 # define A 0
 # define D 2
-# define EPLAPOS "Wrong starting position number\n"
-# define ELINELEN "Different map line sizes\n"
-# define ENONCHR "Non cub file symbol found\n"
-# define ENOTCLO "Map not closed by walls\n"
+# define EOPEN "Error opening file\n"
+# define EPLAPOS "Several starting positions\n"
+# define ENONCHR "Found symbol outside cub file standard\n"
+# define ENOTCLO "Map not enclosed by walls\n"
+# define EINFO "Wrong information in cub file parameters\n"
 
 typedef struct		s_maps
 {
 	char			**val;
+	char			*north;
+	char			*south;
+	char			*west;
+	char			*east;
+	char			*sprite;
 	int				height;
 	int				width;
 	int				res_height;
 	int				res_width;
-	char			**textures;
 	unsigned int	floor_color;
 	unsigned int	ceiling_color;
 	int				*wall_linelength;
@@ -93,6 +98,7 @@ int		ray_caster(t_vars *var);
 
 int		camera_update(int keycode, t_vars *var);
 int		x_close(t_vars *var);
+void	error_exit(char *errstr);
 
 /*
  **		ray_caster_utils_calc
@@ -119,16 +125,16 @@ void	phi_three_pi_half_calc(t_vars *var, int *map_cell, double *dist);
  **		read_utils
  */
 
-char	*skip_spaces(char *str);
+int		digit_number(int n, int basesize);
 int		is_cub_file_chr(int c);
 int		is_player_pos(int c);
-int		check_wall_error(char *line, int *param);
-int		check_player_pos_error(char **m, int i, int *count);
-
+int		read_floor_ceil_color(t_maps *map, char *buff, int i);
+int		read_res(t_maps *map, char *buff, int i);
 /*
  **		read_utils2
  */
 
+int		read_text_path(t_maps *map, char *buff, int i);
 void	find_player_pos(t_maps *map, t_vars *var);
 void	full_free(void **buff, int arr_len);
 void	save_img(t_vars *var, void *img);

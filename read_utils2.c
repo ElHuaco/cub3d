@@ -6,11 +6,23 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 18:14:43 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/18 15:41:22 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/02/21 15:46:00 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+int			digit_number(int n, int basesize)
+{
+	int i;
+
+	if (n < 0)
+		n *= -1;
+	i = 1;
+	while ((n / basesize) > 0)
+		i++;
+	return (i);
+}
 
 void		full_free(void **buff, int n)
 {
@@ -58,7 +70,7 @@ void		find_player_pos(t_maps *map, t_vars *var)
 
 void	save_img(t_vars *var, void *img)
 {
-	//Guarda la imagen en bpp
+	//Guarda la imagen en bmp
 	var->must_save = 0;
 	img = 0;
 }
