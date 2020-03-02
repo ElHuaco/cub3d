@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 16:15:52 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/21 16:31:40 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/03/02 12:09:35 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,25 +34,25 @@ int			is_player_pos(int c)
 int			read_floor_ceil_color(t_maps *map, char *buff, int i)
 {
 	int		j;
-	int		ceil_or_floor_bool;
+	int		ceil_or_floor;
 	int		r;
 	int		g;
 	int		b;
 
-	ceil_or_floor_bool = (buff[i] == 'F') ? 0 : 1;
+	ceil_or_floor = (buff[i] == 'F') ? 0 : 1;
 	while (buff[++i] == ' ');
 	r = ft_atoi(buff + i) * 65536;
 	j = -1;
-	while (ft_isnum(buff[i + ++j]));
+	while (ft_isnum(buff[i + j++]));
 	i += j + 1;
 	g = ft_atoi(buff + i) * 256;
-	j = 0;
-	while (ft_isnum(buff[i + ++j]));
+	j = -1;
+	while (ft_isnum(buff[i + j++]));
 	i += j + 1;
 	b = ft_atoi(buff + i);
 	if ((r < 0) || (g < 0) || (b < 0))
 		error_exit(EINFO);
-	if (!ceil_or_floor_bool)
+	if (!ceil_or_floor)
 		map->floor_color = r + g + b;
 	else
 		map->ceiling_color = r + g + b;
@@ -65,11 +65,11 @@ int			read_res(t_maps *map, char *buff, int i)
 
 	while (buff[++i] == ' ');
 	j = -1;
-	while (ft_isnum(buff[i + ++j]));
+	while (ft_isnum(buff[i + j++]));
 	map->res_height = ft_atoi(buff + i);
 	i += j;
 	while (buff[i++] == ' ');
-	j = 0;
+	j = -1;
 	while (ft_isnum(buff[i + j++]));
 	map->res_width = ft_atoi(buff + i);
 	if ((map->res_width <= 0) || (map->res_height <= 0))

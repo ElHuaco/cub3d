@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/31 12:52:52 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/21 16:32:28 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/03/02 12:45:22 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,12 @@ static void		read_map_values(t_maps *map, char *buff)
 {
 	int		i;
 	int		j;
+	int		**vals_with_spaces;
 	int		pla_pos_count;
 
 	pla_pos_count = 0;
-	map->val = ft_split(buff, '\n');
+	vals_with_spaces = ft_split(buff, '\n');
+	map->val = skip_spaces(vals_with_spaces);
 	map->height = ft_arrlen(map->val);
 	map->width = ft_strlen(map->val[0]);
 	i = -1;

@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 15:16:50 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/21 15:50:34 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/03/02 12:13:06 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,5 +137,11 @@ int		read_res(t_maps *map, char *buff, int i);
 int		read_text_path(t_maps *map, char *buff, int i);
 void	find_player_pos(t_maps *map, t_vars *var);
 void	full_free(void **buff, int arr_len);
+char	**skip_spaces(char **lines);
+
+/*		save_utils
+ *
+ */
+
 void	save_img(t_vars *var, void *img);
 #endif

@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 18:14:43 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/21 15:46:00 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/03/02 12:44:59 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,30 @@ void		find_player_pos(t_maps *map, t_vars *var)
 	map->val[i][j] = '0';
 }
 
-void	save_img(t_vars *var, void *img)
+char	**skip_spaces(char **lines)
 {
-	//Guarda la imagen en bmp
-	var->must_save = 0;
-	img = 0;
+	char	**lines_skiped_sp;
+	int		arr_size;
+	int		str_size;
+	int		i;
+	int		j;
+
+	arr_size = ft_arrlen(lines);
+	str_size = ft_strlen(lines[0]);
+	lines_skiped_sp = malloc(sizeof(char *) * (arr_size + 1));
+	lines_skiped_sp[arr_size] = 0;
+	i = -1;
+	while (i++ < arr_size)
+	{
+		lines_skiped_sp[i] = malloc(sizeof(char) * (str_size / 2));
+		lines_skiped_sp[i][str_size / 2] = 0;
+		j = -1;
+		while (j++ < str_size)
+		{
+			if (lines[i][j] != ' ')
+				lines_skipped_sp[i][j / 2] = lines[i][j];
+		}
+	}
+	full_free(lines);
+	return(lines_skiped_sp);
 }
