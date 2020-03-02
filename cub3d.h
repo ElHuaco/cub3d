@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 15:16:50 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/03/02 12:13:06 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/03/02 13:11:01 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,7 @@ int		is_cub_file_chr(int c);
 int		is_player_pos(int c);
 int		read_floor_ceil_color(t_maps *map, char *buff, int i);
 int		read_res(t_maps *map, char *buff, int i);
+
 /*
  **		read_utils2
  */
@@ -138,6 +139,7 @@ int		read_text_path(t_maps *map, char *buff, int i);
 void	find_player_pos(t_maps *map, t_vars *var);
 void	full_free(void **buff, int arr_len);
 char	**skip_spaces(char **lines);
+void	create_textures_mlx_img(t_vars *var, t_imgs *img);
 
 /*		save_utils
  *

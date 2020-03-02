@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 20:00:13 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/20 15:41:56 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/03/02 13:10:49 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,7 @@ int			ray_caster(t_vars *var)
 
 	img[0].img = mlx_new_image(var->mlx,
 		var->map->res_width, var->map->res_height);
-	i = 0;
-	while (++i < 5 + SPRITE_NUMBER)
-		img[i].img = mlx_xpm_file_to_image(var->mlx, var->map->textures[i - 1], &img[i].img_w, &img[i].img_h);
+	create_textures_mlx_img(var, img);
 	i = -1;
 	while (++i < 5 + SPRITE_NUMBER)
 	{

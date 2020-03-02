@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/31 12:52:52 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/03/02 12:45:22 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/03/02 13:01:58 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void		read_map_values(t_maps *map, char *buff)
 {
 	int		i;
 	int		j;
-	int		**vals_with_spaces;
+	char	**vals_with_spaces;
 	int		pla_pos_count;
 
 	pla_pos_count = 0;
@@ -105,7 +105,15 @@ int				main(int argc, char **argv)
 		return(1);
 	}
 	read_cub_file(argv, &var);
-	//printf("Mapa leido y asignado\n");
+	printf("Mapa leido y asignado\n");
+	printf("--------Mapa-------\n");
+	int i = -1;
+	while (++i < ft_arrlen(var.map->val))
+		printf("%s\n", var.map->val[i]);
+	printf("Map dim: %d %d /t Map res: %d %d\n", var.map->width, var.map->height, var.map->res_width, var.map->res_height);
+	printf("Map ceil color: %d, Map floor color: %d\n", var.map->ceiling_color, var.map->floor_color);
+	printf("----------Texturas-----\n");
+	printf("NO %s SO %s WE %s EA %s S %s\n", var.map->north, var.map->south, var.map->west, var.map->east, var.map->sprite);
 	if (argc == 3)
 		var.must_save = 1;
 	var.mlx = mlx_init();
