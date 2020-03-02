@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/31 12:52:52 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/03/02 13:01:58 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/03/02 17:16:22 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@ static int		read_map_params(t_maps *map, char *buff)
 	int		i;
 
 	i = 0;
-	while (buff[i])
+	while (!(map->north) || !(map->south) || !(map->west) || !(map->east)
+		|| !(map->sprite) || !(map->res_width) || !(map->res_height)
+		|| !(map->ceiling_color) || !(map->floor_color))
 	{
 		if (buff[i] == 'R')
 			i = read_res(map, buff, i);
@@ -26,13 +28,13 @@ static int		read_map_params(t_maps *map, char *buff)
 		else if ((buff[i] == 'N') || (buff[i] == 'S') || (buff[i] == 'W')
 			|| (buff[i] == 'E'))
 			i = read_text_path(map, buff, i);
+		else if (buff[i] == '\n')
+			i++;
 		else
 			error_exit(EINFO);
 	}
-	if (!(map->north) || !(map->south)
-		|| !(map->west) || !(map->east) || !(map->sprite))
-		error_exit(EINFO);
-	return (i);
+	while (buff[i++] == '\n');
+	return (i - 1);
 }
 
 static void		read_map_values(t_maps *map, char *buff)
@@ -56,11 +58,12 @@ static void		read_map_values(t_maps *map, char *buff)
 			if ((is_cub_file_chr(map->val[i][j])) == 0)
 				error_exit(ENONCHR);
 			if (((map->val[i][0] != '1')
-				|| (map->val[i][map->height - 1] != '1'))
-				|| ((!i || (i == map->height)) && (map->val[i][j] != '1')))
+				|| (map->val[i][map->width - 1] != '1'))
+				|| ((!i || (i == map->height - 1)) && (map->val[i][j] != '1')))
+			{printf("NOT ENCLOSED BECAUSE OF LINE %d\n", i);
 				error_exit(ENOTCLO);
-			pla_pos_count += is_player_pos(map->val[i][j]) ? 1 : 0;
-			if (pla_pos_count > 1)
+			}pla_pos_count += is_player_pos(map->val[i][j]) ? 1 : 0;
+			if ((pla_pos_count > 1) || (pla_pos_count == 0))
 				error_exit(EPLAPOS);
 		}
 	}
@@ -73,18 +76,15 @@ static void		read_cub_file(char **argv, t_vars *var)
 	int		fd;
 	int		i;
 
-	if ((fd = open(argv[1], O_RDONLY) < 0))
+	if ((fd = open(argv[1], O_RDONLY)) < 0)
 		error_exit(EOPEN);
 	i = 0;
 	buff = malloc(sizeof(char) * 1);
-	while ((read(fd, buff, 1)) > 0)
-	{
-		free(buff);
+	while ((read(fd, buff, 1)) == 1)
 		i++;
-	}
 	free(buff);
 	close(fd);
-	if ((fd = open(argv[1], O_RDONLY) < 0))
+	if ((fd = open(argv[1], O_RDONLY)) < 0)
 		error_exit(EOPEN);
 	buff = malloc(sizeof(char) * (i + 1));
 	buff[i] = 0;

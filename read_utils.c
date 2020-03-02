@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 16:15:52 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/03/02 12:09:35 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/03/02 17:01:15 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,11 @@ int			read_floor_ceil_color(t_maps *map, char *buff, int i)
 	while (buff[++i] == ' ');
 	r = ft_atoi(buff + i) * 65536;
 	j = -1;
-	while (ft_isnum(buff[i + j++]));
+	while (ft_isdigit(buff[i + ++j]));
 	i += j + 1;
 	g = ft_atoi(buff + i) * 256;
 	j = -1;
-	while (ft_isnum(buff[i + j++]));
+	while (ft_isdigit(buff[i + ++j]));
 	i += j + 1;
 	b = ft_atoi(buff + i);
 	if ((r < 0) || (g < 0) || (b < 0))
@@ -65,15 +65,15 @@ int			read_res(t_maps *map, char *buff, int i)
 
 	while (buff[++i] == ' ');
 	j = -1;
-	while (ft_isnum(buff[i + j++]));
+	while (ft_isdigit(buff[i + ++j]));
 	map->res_height = ft_atoi(buff + i);
-	i += j;
-	while (buff[i++] == ' ');
+	i += j - 1;
+	while (buff[++i] == ' ');
 	j = -1;
-	while (ft_isnum(buff[i + j++]));
+	while (ft_isdigit(buff[i + ++j]));
 	map->res_width = ft_atoi(buff + i);
 	if ((map->res_width <= 0) || (map->res_height <= 0))
-		error_exit(EINFO);
+			error_exit(EINFO);
 	return (i + j);
 }
 
@@ -83,14 +83,13 @@ int			read_text_path(t_maps *map, char *buff, int i)
 	int		k;
 
 	j = i;
-	if ((buff[i] != 'S') && (buff[++i] != 'O'))
-		error_exit(EINFO);
+	i++;
 	while (buff[++i] == ' ');
 	k = i;
 	if ((buff[i] != '.') || (buff[i + 1] != '/'))
 		error_exit(EINFO);
 	while (buff[i++] != '\n');
-	buff[i] = 0;
+	buff[i - 1] = 0;
 	if (buff[j] == 'N')
 		map->north = ft_strdup(buff + k);
 	else if ((buff[j] == 'S') && (buff[j + 1] == 'O'))
@@ -101,5 +100,5 @@ int			read_text_path(t_maps *map, char *buff, int i)
 		map->east = ft_strdup(buff + k);
 	else
 		map->sprite = ft_strdup(buff + k);
-	return (i + 1);
+	return (i);
 }

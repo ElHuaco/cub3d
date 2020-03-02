@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 18:14:43 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/03/02 13:11:23 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/03/02 17:09:15 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,12 @@ char	**skip_spaces(char **lines)
 	lines_skipped_sp = malloc(sizeof(char *) * (arr_size + 1));
 	lines_skipped_sp[arr_size] = 0;
 	i = -1;
-	while (i++ < arr_size)
+	while (++i < arr_size)
 	{
-		lines_skipped_sp[i] = malloc(sizeof(char) * (str_size / 2));
-		lines_skipped_sp[i][str_size / 2] = 0;
+		lines_skipped_sp[i] = malloc(sizeof(char) * (str_size - str_size / 2));
+		lines_skipped_sp[i][str_size - str_size / 2 - 1] = 0;
 		j = -1;
-		while (j++ < str_size)
+		while (++j < str_size)
 		{
 			if (lines[i][j] != ' ')
 				lines_skipped_sp[i][j / 2] = lines[i][j];

@@ -1,6 +1,5 @@
-- rehacer read cub files con malloc bien. Es causa de leaks y crashes.
+- rehacer read cub files con malloc bien. Es causa de leaks y crashes. cambiar map->textures por el que corresp.
 - Textured: fixear sliding.
 - Sprites
 - --save
-- read cub files
-- leaks, eficiencia
+leaks, eficiencia

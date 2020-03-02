@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 15:16:50 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/03/02 13:11:01 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/03/02 17:13:48 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@
 # define A 0
 # define D 2
 # define EOPEN "Error opening file\n"
-# define EPLAPOS "Several starting positions\n"
+# define EPLAPOS "Starting position count not 1\n"
 # define ENONCHR "Found symbol outside cub file standard\n"
 # define ENOTCLO "Map not enclosed by walls\n"
 # define EINFO "Wrong information in cub file parameters\n"
