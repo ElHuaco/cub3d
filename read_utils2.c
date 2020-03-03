@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 18:14:43 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/03/02 17:09:15 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/03/03 12:44:47 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,34 +40,6 @@ void		full_free(void **buff, int n)
 	}
 }
 
-void		find_player_pos(t_maps *map, t_vars *var)
-{
-	int i;
-	int	j;
-	int n;
-
-	n = ft_arrlen(map->val);
-	i = -1;
-	while (++i < n)
-	{
-		j = -1;
-		while (++j < map->width)
-		{
-			if (is_player_pos(map->val[i][j]))
-			{
-				var->x = (double)j + 0.5;
-				var->y = (double)i + 0.5;
-				break ;
-			}
-		}
-	}
-	j = (int)var->x;
-	i = (int)var->y;
-	var->sigma = 0.0 * (map->val[i][j] == 'E') + PI2 * (map->val[i][j] == 'N')
-		+ PI * (map->val[i][j] == 'W') + _3PI2 * (map->val[i][j] == 'S');
-	map->val[i][j] = '0';
-}
-
 char	**skip_spaces(char **lines)
 {
 	char	**lines_skipped_sp;
@@ -83,8 +55,8 @@ char	**skip_spaces(char **lines)
 	i = -1;
 	while (++i < arr_size)
 	{
-		lines_skipped_sp[i] = malloc(sizeof(char) * (str_size - str_size / 2));
-		lines_skipped_sp[i][str_size - str_size / 2 - 1] = 0;
+		lines_skipped_sp[i] = malloc(sizeof(char) * (2 + str_size / 2));
+		lines_skipped_sp[i][1 + str_size / 2] = 0;
 		j = -1;
 		while (++j < str_size)
 		{

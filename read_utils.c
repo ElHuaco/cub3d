@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 16:15:52 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/03/02 17:01:15 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/03/03 12:46:56 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,21 @@ int			is_cub_file_chr(int c)
 		return (0);
 }
 
-int			is_player_pos(int c)
+int			set_pla_pos_camera(t_vars *var, t_maps *map, int i, int j)
 {
+	char	c;
+
+	c = map->val[i][j];
 	if ((c == 'W') || (c == 'E') || (c == 'N') || (c == 'S')
 		|| (c == 'N'))
+	{
+		var->sigma = 0 * (c == 'E') + PI2 * (c == 'N') + PI * (c == 'W')
+			+ _3PI2 * (c == 'S');
+		var->x = j + 0.5;
+		var->y = i + 0.5;
+		map->val[i][j] = '0';
 		return (1);
+	}
 	else
 		return (0);
 }
@@ -39,6 +49,7 @@ int			read_floor_ceil_color(t_maps *map, char *buff, int i)
 	int		g;
 	int		b;
 
+//	printf("read floor ceil call\n");
 	ceil_or_floor = (buff[i] == 'F') ? 0 : 1;
 	while (buff[++i] == ' ');
 	r = ft_atoi(buff + i) * 65536;
@@ -63,15 +74,16 @@ int			read_res(t_maps *map, char *buff, int i)
 {
 	int		j;
 
-	while (buff[++i] == ' ');
-	j = -1;
-	while (ft_isdigit(buff[i + ++j]));
-	map->res_height = ft_atoi(buff + i);
-	i += j - 1;
+//	printf("read res call\n");
 	while (buff[++i] == ' ');
 	j = -1;
 	while (ft_isdigit(buff[i + ++j]));
 	map->res_width = ft_atoi(buff + i);
+	i += j - 1;
+	while (buff[++i] == ' ');
+	j = -1;
+	while (ft_isdigit(buff[i + ++j]));
+	map->res_height = ft_atoi(buff + i);
 	if ((map->res_width <= 0) || (map->res_height <= 0))
 			error_exit(EINFO);
 	return (i + j);
@@ -82,6 +94,7 @@ int			read_text_path(t_maps *map, char *buff, int i)
 	int		j;
 	int		k;
 
+//	printf("read text path call\n");
 	j = i;
 	i++;
 	while (buff[++i] == ' ');

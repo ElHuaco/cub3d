@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 17:39:16 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/02/20 16:00:33 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/03/03 12:55:20 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ static void	cast_till_wall(t_vars *var, int *cell, double *dist)
 {
 	while (var->map->val[cell[1]][cell[0]] != '1')
 	{
-		printf("\t%d %d es %c\n", cell[0], cell[1], var->map->val[cell[1]][cell[0]]);
-		printf("\tDists: %f %f\n", dist[2], dist[3]);
-		printf("\tSteps: %d %d\n", (int)dist[5], (int)dist[6]);
+//		printf("\t%d %d es %c\n", cell[0], cell[1], var->map->val[cell[1]][cell[0]]);
+//		printf("\tDists: %f %f\n", dist[2], dist[3]);
+//		printf("\tSteps: %d %d\n", (int)dist[5], (int)dist[6]);
 		if (dist[2] < dist[3])
 		{
 			dist[2] += fabs(dist[0]);
@@ -76,13 +76,13 @@ double		ray_distance(t_vars *var, int col)
 		dist[1] = (fabs(phi - 0.0) < 10e-7) ? -1 * INFINITY : INFINITY;
 	else
 		dist[1] = -1 / sin(phi);
-printf("\tRayo %d con %f-> sec: %f ->cosec: %f\n", col, phi * 180 / PI, dist[0], dist[1]);
+//printf("\tRayo %d con %f-> sec: %f ->cosec: %f\n", col, phi * 180 / PI, dist[0], dist[1]);
 	cuad_calc(var, phi, map_cell, dist);
-	printf("Cast till wall called\n");
+//	printf("Cast till wall called\n");
 	cast_till_wall(var, map_cell, dist);
-	printf("choose a side called\n");
+//	printf("choose a side called\n");
 	choose_a_side(var, phi);
-printf("\tMuro en %d %d, cara %c, para rayo %d\n", map_cell[0], map_cell[1], var->side, col);
+//printf("\tMuro en %d %d, cara %c, para rayo %d\n", map_cell[0], map_cell[1], var->side, col);
 	if (var->side == 'w' || var->side == 'e')
 	{	//dist[4] = dist[0] * (map_cell[0] - var->x + (1.0 - dist[5]) / 2.0);
 		dist[4] = cos(phi - var->sigma) * dist[0] * (map_cell[0] - var->x
@@ -102,7 +102,7 @@ printf("\tMuro en %d %d, cara %c, para rayo %d\n", map_cell[0], map_cell[1], var
 			+ (1 - dist[6]) / 2.0) / tan(phi);
 	}
 	var->ray_hit[col] -= floor(var->ray_hit[col]);
-	printf("\tHit en col relat: %f\n", var->ray_hit[col]);
-	printf("Distancia %f para rayo %d\n", dist[4], col);
+//	printf("\tHit en col relat: %f\n", var->ray_hit[col]);
+//	printf("Distancia %f para rayo %d\n", dist[4], col);
 	return (dist[4]);
 }
