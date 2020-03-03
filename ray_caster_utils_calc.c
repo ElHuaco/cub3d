@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 17:39:16 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/03/03 14:12:33 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/03/03 15:42:36 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ double		ray_distance(t_vars *var, int col)
 	//	var->ray_hit[col] = var->y - map_cell[1] + (map_cell[0] - var->x
 	//		+ (1 - dist[5]) / 2.0) * tan(phi);
 
-		var->ray_hit[col] = -1 * map_cell[1] + (map_cell[0] - var->x
+		var->ray_hit[col] = var->y - map_cell[1] - (map_cell[0] - var->x
 			+ (1 - dist[5]) / 2.0) * tan(phi);
 	}
 	else
@@ -100,7 +100,7 @@ double		ray_distance(t_vars *var, int col)
 	//	var->ray_hit[col] = var->x - map_cell[0] + (map_cell[1] - var->y
 	//		+ (1 - dist[6]) / 2.0) / tan(phi);
 
-		var->ray_hit[col] = -1 * map_cell[0] + (map_cell[1] - var->y
+		var->ray_hit[col] = var->x - map_cell[0] - (map_cell[1] - var->y
 			+ (1 - dist[6]) / 2.0) / tan(phi);
 	}
 	var->ray_hit[col] -= floor(var->ray_hit[col]);

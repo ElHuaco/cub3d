@@ -1,5 +1,4 @@
-- rehacer read cub files con malloc bien. Es causa de leaks y crashes. cambiar map->textures por el que corresp. ¿Free wall_ll, wall_start?
-- Textured: fixear sliding.
+- Textured: optimizar al acercarse a textura.
 - Sprites
 - --save
 leaks, eficiencia
