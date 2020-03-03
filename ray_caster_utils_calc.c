@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 17:39:16 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/03/03 12:55:20 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/03/03 14:12:33 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,18 +87,20 @@ double		ray_distance(t_vars *var, int col)
 	{	//dist[4] = dist[0] * (map_cell[0] - var->x + (1.0 - dist[5]) / 2.0);
 		dist[4] = cos(phi - var->sigma) * dist[0] * (map_cell[0] - var->x
 			+ (1.0 - dist[5]) / 2.0);
-	//	var->ray_hit[col] = var->y - map_cell[1] + dist[0] * sin(phi)
-	//		* dist[4] / cos(phi - var->sigma);
-	var->ray_hit[col] = var->y - map_cell[1] + (map_cell[0] - var->x
+	//	var->ray_hit[col] = var->y - map_cell[1] + (map_cell[0] - var->x
+	//		+ (1 - dist[5]) / 2.0) * tan(phi);
+
+		var->ray_hit[col] = -1 * map_cell[1] + (map_cell[0] - var->x
 			+ (1 - dist[5]) / 2.0) * tan(phi);
 	}
 	else
 	{	//dist[4] = dist[1] * (map_cell[1] - var->y + (1.0 - dist[6]) / 2.0);
 		dist[4] = cos(phi - var->sigma) * dist[1] * (map_cell[1] - var->y
 			+ (1.0 - dist[6]) /2.0);
-	//	var->ray_hit[col] = var->x - map_cell[0] + dist[1] * cos(phi)
-	//		* dist[4] / cos(phi - var->sigma);
-		var->ray_hit[col] = var->x - map_cell[0] + (map_cell[1] - var->y
+	//	var->ray_hit[col] = var->x - map_cell[0] + (map_cell[1] - var->y
+	//		+ (1 - dist[6]) / 2.0) / tan(phi);
+
+		var->ray_hit[col] = -1 * map_cell[0] + (map_cell[1] - var->y
 			+ (1 - dist[6]) / 2.0) / tan(phi);
 	}
 	var->ray_hit[col] -= floor(var->ray_hit[col]);
