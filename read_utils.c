@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 16:15:52 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/03/03 12:46:56 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/03/04 12:07:23 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,8 @@ int			read_res(t_maps *map, char *buff, int i)
 	j = -1;
 	while (ft_isdigit(buff[i + ++j]));
 	map->res_height = ft_atoi(buff + i);
-	if ((map->res_width <= 0) || (map->res_height <= 0))
+	if ((map->res_width <= 0) || (map->res_height <= 0)
+		|| (map->res_width >= 2575) || (map->res_height >= 1440))
 			error_exit(EINFO);
 	return (i + j);
 }

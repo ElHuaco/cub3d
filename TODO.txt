@@ -1,4 +1,4 @@
-- Textured: optimizar al acercarse a textura.
+- Mensajes de error bien, nuevas reglas del mapa.
+- Textured: optimizar(tablas?).
 - Sprites
 - --save
-leaks, eficiencia

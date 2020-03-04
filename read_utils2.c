@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 18:14:43 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/03/03 12:44:47 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/03/04 12:22:19 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,19 @@ char	**skip_spaces(char **lines)
 
 void	create_textures_mlx_img(t_vars *var, t_imgs *img)
 {
+	int		i;
+
+	img[0].img = mlx_new_image(var->mlx, var->map->res_width, var->map->res_height);
 	img[1].img = mlx_xpm_file_to_image(var->mlx, var->map->north, &img[1].img_w, &img[1].img_h);
 	img[2].img = mlx_xpm_file_to_image(var->mlx, var->map->south, &img[2].img_w, &img[2].img_h);
 	img[3].img = mlx_xpm_file_to_image(var->mlx, var->map->west, &img[3].img_w, &img[3].img_h);
 	img[4].img = mlx_xpm_file_to_image(var->mlx, var->map->east, &img[4].img_w, &img[4].img_h);
 	img[5].img = mlx_xpm_file_to_image(var->mlx, var->map->sprite, &img[5].img_w, &img[5].img_h);
+	i = -1;
+	while (++i < 5 + SPRITE_NUMBER)
+	{
+		if (img[i].img)
+			img[i].addr = mlx_get_data_addr(img[i].img, &img[i].bpp,
+				&img[i].ll, &img[i].endian);
+	}
 }
