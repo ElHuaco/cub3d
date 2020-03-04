@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 15:16:50 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/03/03 15:46:45 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/03/04 17:27:29 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@
 # define ENONCHR "Found symbol outside cub file standard\n"
 # define ENOTCLO "Map not enclosed by walls\n"
 # define EINFO "Wrong information in cub file parameters\n"
+# define ETEXPATH "Texture file not found\n"
 
 typedef struct		s_maps
 {
@@ -53,7 +54,6 @@ typedef struct		s_maps
 	char			*east;
 	char			*sprite;
 	int				height;
-	int				width;
 	int				res_height;
 	int				res_width;
 	unsigned int	floor_color;
@@ -87,62 +87,47 @@ typedef struct		s_img
 }					t_imgs;
 
 /*
- **		ray_caster
- */
-
+**		ray_caster
+*/
 int		ray_caster(t_vars *var);
-
 /*
- **		hooks
- */
-
+**		hooks
+*/
 int		camera_update(int keycode, t_vars *var);
 int		x_close(t_vars *var);
 void	error_exit(char *errstr);
-
 /*
- **		ray_caster_utils_calc
- */
-
+**		ray_caster_utils_calc
+*/
 double	ray_distance(t_vars *var, int col_number);
-
 /*
- **		ray_caster_utils_calc2
- */
-
+**		ray_caster_utils_calc2
+*/
 void	cuad_calc(t_vars *var, double phi, int *map_cell, double *dist);
-
 /*
- **		ray_caster_utils_calc3
- */
-
+**		ray_caster_utils_calc3
+*/
 void	phi_zero_calc(t_vars *var, int *map_cell, double *dist);
 void	phi_pi_half_calc(t_vars *var, int *map_cell, double *dist);
 void	phi_pi_calc(t_vars *var, int *map_cell, double *dist);
 void	phi_three_pi_half_calc(t_vars *var, int *map_cell, double *dist);
-
 /*
- **		read_utils
- */
-
+**		read_utils
+*/
 int		digit_number(int n, int basesize);
 int		is_cub_file_chr(int c);
 int		set_pla_pos_camera(t_vars *var, t_maps *map, int i, int j);
 int		read_floor_ceil_color(t_maps *map, char *buff, int i);
 int		read_res(t_maps *map, char *buff, int i);
-
 /*
- **		read_utils2
- */
-
+**		read_utils2
+*/
 int		read_text_path(t_maps *map, char *buff, int i);
+int		map_val_topology_err(char **val, int i, int j, int arr_size);
 void	full_free(void **buff, int arr_len);
-char	**skip_spaces(char **lines);
 void	create_textures_mlx_img(t_vars *var, t_imgs *img);
-
-/*		save_utils
- *
- */
-
+/*
+**		save_utils
+*/
 void	save_img(t_vars *var, void *img);
 #endif

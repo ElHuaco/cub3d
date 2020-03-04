@@ -2,7 +2,7 @@ SRCS = *.c
 
 OBJS = $(SRCS:.c=.o)
 
-FLAGS = -Werror -Wextra -Wall
+FLAGS = -Werror -Wextra -Wall -O3
 
 LIB_FLAGS = -lmlx -lft
 

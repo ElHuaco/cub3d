@@ -1,4 +1,5 @@
-- Mensajes de error bien, nuevas reglas del mapa.
+- Nuevas reglas del mapa.
 - Textured: optimizar(tablas?).
 - Sprites
 - --save
+- Normi

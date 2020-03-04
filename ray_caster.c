@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 20:00:13 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/03/04 12:25:54 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/03/04 17:30:50 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,11 @@ int			ray_caster(t_vars *var)
 		var->map->wall_start[i] = (int)len[3];
 		j = -1;
 		while (++j < (int)len[2])
-			put_pixel_solid(img, i, j, 0xaaaaaa);
+			put_pixel_solid(img, i, j, var->map->ceiling_color);
 		while (j < (int)len[1])
 			put_pixel_textures(img, i, j++, var);
 		while (j < var->map->res_height - 1)
-			put_pixel_solid(img, i, j++, 0xaaaaaa);
+			put_pixel_solid(img, i, j++, var->map->floor_color);
 	}
 	mlx_put_image_to_window(var->mlx, var->win, img[0].img, 0, 0);
 	i = -1;
