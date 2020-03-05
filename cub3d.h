@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 15:16:50 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/03/05 12:30:03 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/03/05 16:41:29 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,14 @@
 # include <stdio.h>
 # include <fcntl.h>
 
-# define FOV M_PI / 2.2
 # define CAM_VEL 0.1
 # define SPRITE_NUMBER 1
 # define READ_SIZE 50
 # define PI M_PI
-# define PI2 PI / 2.0
-# define _3PI2 (3.0 / 2.0) * PI
-# define _2PI 2.0 * PI
+# define PI2 M_PI_2
+# define _3PI2 3*M_PI_2
+# define _2PI 2*M_PI
+# define FOV asin(0.9898)
 # define UP 126
 # define DOWN 125
 # define RIGHT 124
@@ -89,46 +89,46 @@ typedef struct		s_img
 /*
 **		ray_caster
 */
-int		ray_caster(t_vars *var);
+int					ray_caster(t_vars *var);
 /*
 **		hooks
 */
-int		camera_update(int keycode, t_vars *var);
-int		x_close(t_vars *var);
-void	error_exit(char *errstr);
+int					camera_update(int keycode, t_vars *var);
+int					x_close(t_vars *var);
+void				error_exit(char *errstr);
 /*
 **		ray_caster_utils_calc
 */
-double	ray_distance(t_vars *var, int col_number);
+double				ray_distance(t_vars *var, int col_number);
 /*
 **		ray_caster_utils_calc2
 */
-void	cuad_calc(t_vars *var, double phi, int *map_cell, double *dist);
+void				cuad_calc(t_vars *var, double phi, int *cell, double *dis);
 /*
 **		ray_caster_utils_calc3
 */
-void	phi_zero_calc(t_vars *var, int *map_cell, double *dist);
-void	phi_pi_half_calc(t_vars *var, int *map_cell, double *dist);
-void	phi_pi_calc(t_vars *var, int *map_cell, double *dist);
-void	phi_three_pi_half_calc(t_vars *var, int *map_cell, double *dist);
+void				phi_zero_calc(t_vars *var, int *map_cell, double *dist);
+void				phi_pi_half_calc(t_vars *var, int *map_cell, double *dist);
+void				phi_pi_calc(t_vars *var, int *map_cell, double *dist);
+void				phi_three_pi_half_calc(t_vars *var, int *cell, double *dis);
 /*
 **		read_utils
 */
-int		digit_number(int n, int basesize);
-int		is_cub_file_chr(int c);
-int		set_pla_pos_camera(t_vars *var, t_maps *map, int i, int j);
-int		read_floor_ceil_color(t_maps *map, char *buff, int i);
-int		read_res(t_maps *map, char *buff, int i);
+int					digit_number(int n, int basesize);
+int					is_cub_file_chr(int c);
+int					set_pla_pos_camera(t_vars *v, t_maps *m, int i, int j);
+int					read_floor_ceil_color(t_maps *map, char *buff, int i);
+int					read_res(t_maps *map, char *buff, int i);
 /*
 **		read_utils2
 */
-int		read_text_path(t_maps *map, char *buff, int i);
-char	**space_squaring(char **buff);
-int		map_val_topology_err(char **val, int i, int j, int arr_size);
-void	full_free(void **buff, int arr_len);
-void	create_textures_mlx_img(t_vars *var, t_imgs *img);
+int					read_text_path(t_maps *map, char *buff, int i);
+char				**space_squaring(char **buff);
+int					map_val_topology_err(char **val, int i, int j, int as);
+void				full_free(void **buff, int arr_len);
+void				create_textures_mlx_img(t_vars *var, t_imgs *img);
 /*
 **		save_utils
 */
-void	save_img(t_vars *var, void *img);
+void				save_img(t_vars *var, void *img);
 #endif
