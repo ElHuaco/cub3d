@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 18:14:43 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/03/04 19:14:07 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/03/05 12:50:30 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int			digit_number(int n, int basesize)
 		n *= -1;
 	i = 1;
 	while ((n / basesize) > 0)
-	{printf("EH");
+	{
 		n = n / basesize;
 		i++;
 	}
@@ -43,7 +43,35 @@ void		full_free(void **buff, int n)
 	}
 }
 
-int		map_val_topology_err(char **val, int i, int j, int arr_size)
+char		**space_squaring(char **val)
+{
+	int		max_len;
+	int		i;
+	char	*temp[2];
+
+	max_len = ft_strlen(val[0]);
+	i = 0;
+	while (val[++i])
+	{
+		if ((int)ft_strlen(val[i]) > max_len)
+			max_len = ft_strlen(val[i]);
+	}
+	i = -1;
+	while (val[++i])
+	{
+		if ((int)ft_strlen(val[i]) < max_len)
+		{
+			temp[0] = ft_strunichr(-1 * ft_strlen(val[i]) + max_len, ' ');
+			temp[1] = ft_strjoin(val[i], temp[0]);
+			free(temp[0]);
+			free(val[i]);
+			val[i] = temp[1];
+		}
+	}
+	return (val);
+}
+
+int			map_val_topology_err(char **val, int i, int j, int arr_size)
 {
 	int len;
 	int k;
@@ -51,9 +79,13 @@ int		map_val_topology_err(char **val, int i, int j, int arr_size)
 
 	len = ft_strlen(val[i]) - 1;
 	k = -1;
-	while (val[i][++k] == ' ') ;
+	while (val[i][++k] == ' ')
+	{
+	}
 	l = len + 1;
-	while (val[i][--l] == ' ') ;
+	while (val[i][--l] == ' ')
+	{
+	}
 	if ((val[i][k] != '1') || (val[i][l] != '1'))
 		return (1);
 	else if ((!i || (i == arr_size))
@@ -68,24 +100,27 @@ int		map_val_topology_err(char **val, int i, int j, int arr_size)
 		|| (((i != arr_size) && (j != len)) && (val[i + 1][j + 1] == ' '))
 		|| (((i != arr_size) && (j != 0)) && (val[i + 1][j - 1] == ' ')))
 		&& ((val[i][j] != '1') && (val[i][j] != ' ')))
-	{printf("due to SPACES\n");
-		printf("checked %d %d, with ->%c<-\n", i, j, val[i][j]);
 		return (1);
-	}
 	else
 		return (0);
 }
 
-void	create_textures_mlx_img(t_vars *var, t_imgs *img)
+void		create_textures_mlx_img(t_vars *var, t_imgs *img)
 {
 	int		i;
 
-	img[0].img = mlx_new_image(var->mlx, var->map->res_width, var->map->res_height);
-	img[1].img = mlx_xpm_file_to_image(var->mlx, var->map->north, &img[1].img_w, &img[1].img_h);
-	img[2].img = mlx_xpm_file_to_image(var->mlx, var->map->south, &img[2].img_w, &img[2].img_h);
-	img[3].img = mlx_xpm_file_to_image(var->mlx, var->map->west, &img[3].img_w, &img[3].img_h);
-	img[4].img = mlx_xpm_file_to_image(var->mlx, var->map->east, &img[4].img_w, &img[4].img_h);
-	img[5].img = mlx_xpm_file_to_image(var->mlx, var->map->sprite, &img[5].img_w, &img[5].img_h);
+	img[0].img = mlx_new_image(var->mlx, var->map->res_width,
+		var->map->res_height);
+	img[1].img = mlx_xpm_file_to_image(var->mlx, var->map->north,
+		&img[1].img_w, &img[1].img_h);
+	img[2].img = mlx_xpm_file_to_image(var->mlx, var->map->south,
+		&img[2].img_w, &img[2].img_h);
+	img[3].img = mlx_xpm_file_to_image(var->mlx, var->map->west,
+		&img[3].img_w, &img[3].img_h);
+	img[4].img = mlx_xpm_file_to_image(var->mlx, var->map->east,
+		&img[4].img_w, &img[4].img_h);
+	img[5].img = mlx_xpm_file_to_image(var->mlx, var->map->sprite,
+		&img[5].img_w, &img[5].img_h);
 	i = -1;
 	while (++i < 5 + SPRITE_NUMBER)
 	{

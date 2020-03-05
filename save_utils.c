@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/02 12:13:23 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/03/02 12:13:43 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/03/05 12:51:08 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	save_img(t_vars *var, void *img)
 {
-	//Guarda la imagen en bmp
 	var->must_save = 0;
 	img = 0;
 }

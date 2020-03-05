@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 19:22:53 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/03/04 12:51:57 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/03/05 12:58:26 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int			camera_update(int key, t_vars *var)
 			+ PI2 * (key == D) - PI2 * (key == A)) * CAM_VEL;
 	}
 	if (fabs(var->sigma) > _2PI)
-		var->sigma += (var->sigma < 0.0) ? _2PI : -1* _2PI;
+		var->sigma += (var->sigma < 0.0) ? _2PI : -1 * _2PI;
 	if (var->map->val[(int)var->y][(int)var->x] == '0')
 		ray_caster(var);
 	else

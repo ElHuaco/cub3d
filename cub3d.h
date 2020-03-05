@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 15:16:50 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/03/04 17:27:29 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/03/05 12:30:03 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <stdio.h>
 # include <fcntl.h>
 
-# define FOV M_PI / 2.0
+# define FOV M_PI / 2.2
 # define CAM_VEL 0.1
 # define SPRITE_NUMBER 1
 # define READ_SIZE 50
@@ -123,6 +123,7 @@ int		read_res(t_maps *map, char *buff, int i);
 **		read_utils2
 */
 int		read_text_path(t_maps *map, char *buff, int i);
+char	**space_squaring(char **buff);
 int		map_val_topology_err(char **val, int i, int j, int arr_size);
 void	full_free(void **buff, int arr_len);
 void	create_textures_mlx_img(t_vars *var, t_imgs *img);

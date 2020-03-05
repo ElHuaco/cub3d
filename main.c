@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/31 12:52:52 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/03/04 18:59:30 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/03/05 12:58:16 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,10 @@ static int		read_map_params(t_maps *map, char *buff)
 			i++;
 		else
 			error_exit(EINFO);
-		printf("reading map params. Now at ->%c<-\n", buff[i]);
 	}
-	while (buff[i++] == '\n');
+	while (buff[i++] == '\n')
+	{
+	}
 	return (i - 1);
 }
 
@@ -47,9 +48,11 @@ static void		read_map_values(t_vars *var, t_maps *map, char *buff)
 	int		i;
 	int		j;
 	int		pla_pos_count;
+	char	**vals_without_sp_squaring;
 
 	pla_pos_count = 0;
-	map->val = ft_split(buff, '\n');
+	vals_without_sp_squaring = ft_split(buff, '\n');
+	map->val = space_squaring(vals_without_sp_squaring);
 	map->height = ft_arrlen(map->val);
 	i = -1;
 	while (++i < map->height)
@@ -88,9 +91,7 @@ static t_maps	read_cub_file(char **argv, t_vars *var)
 	buff = malloc(sizeof(char) * (i + 1));
 	buff[i] = 0;
 	read(fd, buff, i);
-	printf("read map params call\n");
 	i = read_map_params(&map, buff);
-	printf("read map val call\n");
 	read_map_values(var, &map, buff + i);
 	free(buff);
 	return (map);
@@ -105,14 +106,10 @@ int				main(int argc, char **argv)
 		|| (argc == 1) || (argc > 3))
 	{
 		ft_printf("Error\nWrong argument usage\n");
-		return(1);
+		return (1);
 	}
 	map = read_cub_file(argv, &var);
 	var.map = &map;
-	printf("----MAPA---\n");
-	int i = -1;
-	while (++i < ft_arrlen(var.map->val))
-		printf("%s\n", var.map->val[i]);
 	if (argc == 3)
 		var.must_save = 1;
 	var.mlx = mlx_init();
@@ -123,7 +120,7 @@ int				main(int argc, char **argv)
 	if (!var.win)
 		return (1);
 	mlx_hook(var.win, 1, 0, ray_caster, &var);
-	mlx_hook(var.win, 2, 1L<<1, camera_update, &var);
+	mlx_hook(var.win, 2, 1L << 0, camera_update, &var);
 	mlx_hook(var.win, 17, 0, x_close, &var);
 	mlx_loop(var.mlx);
 	return (0);
