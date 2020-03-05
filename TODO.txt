@@ -1,3 +1,4 @@
+- Bugs textures al acercarse a 0, π/2, π, 3π/2
 - Sprites
 - --save
 - Normi

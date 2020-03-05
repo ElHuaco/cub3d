@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 20:00:13 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/03/05 12:57:20 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/03/05 15:33:07 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	put_pixel_textures(t_imgs *img, int i, int j, t_vars *var)
 	corresp_tex_coord[0] = img[side].img_w * var->ray_hit[i];
 	corresp_tex_coord[1] = img[side].img_h
 		* (j - var->map->wall_start[i]) / var->map->wall_linelength[i];
-	*dst = img[0].addr + j * img[0].ll + i * (img[0].bpp / 8);
+	dst = img[0].addr + j * img[0].ll + i * (img[0].bpp / 8);
 	*(unsigned int*)dst = *(unsigned int*)(img[side].addr
 		+ corresp_tex_coord[1] * img[side].ll
 		+ corresp_tex_coord[0] * (img[side].bpp / 8));
@@ -84,13 +84,13 @@ int			ray_caster(t_vars *var)
 			put_pixel_solid(img, i, j++, var->map->floor_color);
 	}
 	mlx_put_image_to_window(var->mlx, var->win, img[0].img, 0, 0);
+	if (var->must_save == 1)
+		save_img(var, img[0].img);
 	i = -1;
 	while (++i < 5 + SPRITE_NUMBER)
 		mlx_destroy_image(var->win, img[i].img);
 	free(var->ray_hit);
 	free(var->map->wall_start);
 	free(var->map->wall_linelength);
-	if (var->must_save == 1)
-		save_img(var, img[0].img);
 	return (0);
 }

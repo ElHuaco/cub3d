@@ -1,0 +1,11 @@
+*.o
+*.xpm
+*.swp
+*.cub
+mini*/*
+lib*/*
+*.txt
+*.dylib
+*.a
+*.dSYM
+cub3d
