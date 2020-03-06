@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 20:00:13 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/03/05 16:20:49 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/03/06 14:39:37 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int			ray_caster(t_vars *var)
 	int		i;
 	int		j;
 	double	len[5];
-	t_imgs	img[1 + 4 + SPRITE_NUMBER];
+	t_imgs	img[6];
 
 	create_textures_mlx_img(var, img);
 	i = -1;
@@ -83,11 +83,12 @@ int			ray_caster(t_vars *var)
 		while (j < var->map->res_height - 1)
 			put_pixel_solid(img, i, j++, var->map->floor_color);
 	}
+	sprite_caster(var, img);
 	mlx_put_image_to_window(var->mlx, var->win, img[0].img, 0, 0);
 	if (var->must_save == 1)
 		save_img(var, img[0].img);
 	i = -1;
-	while (++i < 5 + SPRITE_NUMBER)
+	while (++i < 6)
 		mlx_destroy_image(var->win, img[i].img);
 	free(var->ray_hit);
 	free(var->map->wall_start);

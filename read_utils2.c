@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 18:14:43 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/03/05 12:50:30 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/03/06 14:36:07 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,9 @@ char		**space_squaring(char **val)
 
 int			map_val_topology_err(char **val, int i, int j, int arr_size)
 {
-	int len;
-	int k;
-	int l;
+	int			len;
+	int			k;
+	int			l;
 
 	len = ft_strlen(val[i]) - 1;
 	k = -1;
@@ -122,7 +122,7 @@ void		create_textures_mlx_img(t_vars *var, t_imgs *img)
 	img[5].img = mlx_xpm_file_to_image(var->mlx, var->map->sprite,
 		&img[5].img_w, &img[5].img_h);
 	i = -1;
-	while (++i < 5 + SPRITE_NUMBER)
+	while (++i < 6)
 	{
 		if (img[i].img)
 			img[i].addr = mlx_get_data_addr(img[i].img, &img[i].bpp,

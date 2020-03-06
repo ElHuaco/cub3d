@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 15:16:50 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/03/05 16:41:29 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/03/06 15:06:01 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,12 @@
 # include <fcntl.h>
 
 # define CAM_VEL 0.1
-# define SPRITE_NUMBER 1
 # define READ_SIZE 50
 # define PI M_PI
 # define PI2 M_PI_2
 # define _3PI2 3*M_PI_2
 # define _2PI 2*M_PI
-# define FOV asin(0.9898)
+# define FOV 1.427996
 # define UP 126
 # define DOWN 125
 # define RIGHT 124
@@ -44,6 +43,20 @@
 # define ENOTCLO "Map not enclosed by walls\n"
 # define EINFO "Wrong information in cub file parameters\n"
 # define ETEXPATH "Texture file not found\n"
+# define EARG "Wrong argument use\n"
+# define EMLX "mlx init failure\n"
+# define EWIN "mlx new window failure\n"
+
+typedef struct		s_sprites
+{
+	double			x;
+	double			y;
+	int				width;
+	int				height;
+	double			distance;
+	double			depth;
+	int				col_num;
+}					t_sprites;
 
 typedef struct		s_maps
 {
@@ -60,6 +73,8 @@ typedef struct		s_maps
 	unsigned int	ceiling_color;
 	int				*wall_linelength;
 	int				*wall_start;
+	int				sprite_num;
+	t_sprites		*sprites;
 }					t_maps;
 
 typedef struct		s_vars
@@ -131,4 +146,8 @@ void				create_textures_mlx_img(t_vars *var, t_imgs *img);
 **		save_utils
 */
 void				save_img(t_vars *var, void *img);
+/*
+**		sprite_caster
+*/
+void				sprite_caster(t_vars *var, t_imgs *img);
 #endif
