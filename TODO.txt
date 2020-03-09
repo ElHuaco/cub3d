@@ -1,3 +1,4 @@
-- Sprites
-- --save
-- Normi
+- Sprites L
+- --save  M
+- Normi   X
+- Entrega J
