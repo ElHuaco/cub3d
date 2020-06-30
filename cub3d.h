@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 15:16:50 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/03/09 12:14:08 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/06/30 12:46:29 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <stdio.h>
 # include <fcntl.h>
 
-# define CAM_VEL 0.1
+# define CAM_VEL 0.2
 # define READ_SIZE 50
 # define PI M_PI
 # define PI2 M_PI_2
@@ -51,11 +51,7 @@ typedef struct		s_sprites
 {
 	double			x;
 	double			y;
-	int				width;
-	int				height;
-	double			distance;
-	double			depth;
-	int				col_num;
+	double			dist;
 }					t_sprites;
 
 typedef struct		s_maps
@@ -87,6 +83,7 @@ typedef struct		s_vars
 	double			y;
 	char			side;
 	double			*ray_hit;
+	double			*ray_distance;
 	int				must_save;
 }					t_vars;
 
@@ -150,4 +147,10 @@ void				save_img(t_vars *var, void *img);
 **		sprite_caster
 */
 void				sprite_caster(t_vars *var, t_imgs *img);
+/*
+**		sprite_calc_utils
+*/
+void				calc_sprite_bounds(t_vars *v, int *len, double *pro);
+t_sprites			duplicate_sprite(t_sprites src);
+void				replace_sprite(t_sprites *dst, t_sprites *src);
 #endif

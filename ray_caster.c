@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 20:00:13 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/03/09 11:37:21 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/03/09 16:25:08 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,11 @@ int			ray_caster(t_vars *var)
 	var->ray_hit = malloc(sizeof(double) * var->map->res_width);
 	var->map->wall_linelength = malloc(sizeof(int) * var->map->res_width);
 	var->map->wall_start = malloc(sizeof(int) * var->map->res_width);
+	var->ray_distance = malloc(sizeof(double) * var->map->res_width);
 	while (++i < var->map->res_width)
 	{
 		len[0] = ray_distance(var, i);
+		var->ray_distance[i] = len[0];
 		set_pixel_limits(var, len);
 		var->map->wall_linelength[i] = (int)len[4] - (int)len[3];
 		var->map->wall_start[i] = (int)len[3];
@@ -93,5 +95,6 @@ int			ray_caster(t_vars *var)
 	free(var->ray_hit);
 	free(var->map->wall_start);
 	free(var->map->wall_linelength);
+	free(var->ray_distance);
 	return (0);
 }

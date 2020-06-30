@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 16:15:52 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/03/05 12:52:50 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/06/30 09:58:42 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ int			read_text_path(t_maps *map, char *buff, int i)
 {
 	int		j;
 	int		k;
-
+//aqui quiza permitir paths distintos de ./blablabla
 	j = i;
 	i++;
 	while (buff[++i] == ' ')

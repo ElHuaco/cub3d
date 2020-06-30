@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 17:39:16 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/03/05 12:56:12 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/03/09 17:25:08 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ double		ray_distance(t_vars *var, int col)
 	double		dist[7];
 	int			map_cell[2];
 
-	phi = var->sigma + atan(tan(FOV / 2.0)
+	phi = var->sigma - atan(tan(FOV / 2.0)
 		* (2.0 * col / var->map->res_width - 1.0));
 	map_cell[0] = (int)var->x;
 	map_cell[1] = (int)var->y;

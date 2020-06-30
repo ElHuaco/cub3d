@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/06 14:39:48 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/03/09 13:09:05 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/06/30 12:54:08 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ static int	count_map_sprites(t_vars *var)
 	while (++i < var->map->height)
 	{
 		j = -1;
-		while (var->map[i][++j])
+		while (var->map->val[i][++j])
 		{
-			if (var->map[i][j] == '2')
+			if (var->map->val[i][j] == '2')
 				n++;
 		}
 	}
@@ -46,13 +46,13 @@ static void	find_sprite_pos_and_dist(t_vars *var)
 	while (++i < var->map->height)
 	{
 		j = -1;
-		while (var->map[i][++j])
+		while (var->map->val[i][++j])
 		{
-			if (var->map[i][j] == '2')
+			if (var->map->val[i][j] == '2')
 			{
 				var->map->sprites[++k].x = j + 0.5;
 				var->map->sprites[k].y = i + 0.5;
-				var->map->sprites[k].distance =
+				var->map->sprites[k].dist =
 					pow(var->x - j - 0.5, 2) + pow(var->y - i - 0.5, 2);
 			}
 		}
@@ -63,77 +63,85 @@ static void	sort_sprites_by_distance(t_vars *var)
 {
 	int			i;
 	int			j;
-	int			k;
 	t_sprites	temp;
 
-	k = 0;
 	i = -1;
-	while (++i < var->map->sprite_number - 1)
+	while (++i < var->map->sprite_num)
 	{
 		j = -1;
-		while (++j < var->map->sprite_number - 1)
+		while (++j < var->map->sprite_num)
 		{
-			if ((var->map->sprites[j].distance
-				> var->map->sprites[i].distance) && (j < i))
-			{
-				temp = var->map->sprites[i];
-				var->map->sprites[j] = var->map->sprites[i];
-				var->map->sprites[i] = temp;
+			if ((var->map->sprites[j].dist > var->map->sprites[i].dist)
+				&& (j > i))
+			{ 
+				temp = duplicate_sprite(var->map->sprites[i]);
+				replace_sprite(var->map->sprites + i,
+					var->map->sprites + j);
+				replace_sprite(var->map->sprites + j, &temp);
 			}
 		}
 	}
 }
 
-static void	put_sprite_img(t_vars *var, int *len, double *pr, t_imgs *img)
+static void	put_sprite_img(t_vars *v, int *l, double *p, t_imgs *i)
 {
 	char	*dst;
-	int		corresp_sprel_coord[2];
-	int		col;
-	int		row;
-
-	col = len[0] - 1;
-	while (++col < len[1])
+	char	*src;
+	int		s[2];
+	int		c;
+	int		r;
+//Error aquí
+	c = l[0] - 1;
+	while (++c < l[1])
 	{
-		corresp_sprel_coord[0] = (col - len[0]) * img[5].img_w
-			/ fabs(var->map->res_height / pr[1]);
-	 	if (pr[1] > 0 && col > 0 && col < var->map->res_width
-				&& pr[1] < var->ray_distance[col])
+		s[0] = (c - l[0]) * i[5].img_w / fabs(v->map->res_height / p[1]);
+	 	if ((p[1] > 0) && (c > 0) && (c < v->map->res_width)
+				&& (p[1] < v->ray_distance[c]))
 		{
-			row = len[2] - 1;
-			while (++row < len[3])
+			r = l[2] - 1;
+			while (++r < l[3])
 			{
-				corresp_sprel_coord[1] = (row - len[2]) * img[5].img_h
-					/ fabs(var->map->res_height / pr[1]);
-				dst = img[0].addr + corresp_sprel_coord[1] * img[0].ll
-					+ corresp_sprel_coord[0] * (img[0].bpp / 8);
-	*(unsigned int *)dst = *(unsigned int *)(img[5].addr
-		+ corresp_sprel_coord[1] * img[5].ll
-		+ corresp_sprel_coord[0] * (img[5].bpp / 8));
+//printf("Bounds: Xstart: %d Xend: %d Ystart: %d Yend: %d\n", l[0], l[1], l[2], l[3]);
+//printf("Projections: Xpro: %f Ypro: %f\n", p[0], p[1]);
+				s[1] = (r - l[2]) * i[5].img_h
+					/ fabs(v->map->res_height / p[1]);
+				dst = i[0].addr + r * i[0].ll + c * (i[0].bpp / 8);
+				src = i[5].addr + s[1] * i[5].ll + s[0] * (i[5].bpp / 8);
+				if (*(unsigned int *)src != 0)
+				{
+					//printf("\tAssigned sprel %d %d to %d %d\n", s[0], s[1], c, r);
+					*(unsigned int *)dst = *(unsigned int *)src;
+				}
+			//	else
+				//	printf("\tSprel %d %d for %d %d was black\n", s[0], s[1], c, r);
+			}
+		}
+	}
 }
-
+//Xq proyectar distinto a los muros? Xq sigue al player en proyeccion 2D
 void		sprite_caster(t_vars *var, t_imgs *img)
 {
 	int		i;
 	double	project[2];
 	int		len[4];
-
-	var->map->sprite_number = count_map_sprites(var);
+//printf("sprite caster called\n");
+	var->map->sprite_num = count_map_sprites(var);
+//printf("Found %d sprites\n", var->map->sprite_num);
 	find_sprite_pos_and_dist(var);
 	sort_sprites_by_distance(var);
+//printf("Sprites sorted\n");
 	i = -1;
-	while (++i < var->map->sprite_number - 1)
+	while (++i < var->map->sprite_num)
 	{
 		var->map->sprites[i].x -= var->x;
 		var->map->sprites[i].y -= var->y;
 		project[0] = sin(var->sigma) * var->map->sprites[i].x
-			- cos(var->sigma) * var->map->sprites[i].y;
+			+ cos(var->sigma) * var->map->sprites[i].y;
 		project[1] = cos(var->sigma) * var->map->sprites[i].x
-			+ sin(var->sigma) * var->map->sprites[i].y;
-		calc_sprite_bounds(var, i, len);
+			- sin(var->sigma) * var->map->sprites[i].y;
+//printf("Projections for sprite %d: Xpro: %f Ypro: %f\n", i, project[0], project[1]);
+		calc_sprite_bounds(var, len, project);
+//printf("Bounds for sprite %d: Xstart: %d Xend: %d Ystart: %d Yend: %d\n", i, len[0], len[1], len[2], len[3]);
 		put_sprite_img(var, len, project, img);
-		while (++col < len[1])
-		{
-					put_sprite_img(var, len, project, img);
-		}
 	}
 }
