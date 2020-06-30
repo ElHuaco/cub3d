@@ -1,6 +1,7 @@
 - Sprites
 	Truncamiento incorrecto por un lado
 	Explota al mirar varios sprites a la vez
+
 - --save  
 - Normi   
 - Entrega 
