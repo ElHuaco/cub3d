@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/09 16:13:34 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/06/30 13:06:38 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/07/02 12:27:16 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void		calc_sprite_bounds(t_vars *var, int *len, double *proyect)
 	len[1] = (int)(0.5 * (var->map->res_width * (1 + proyect[0] / proyect[1])
 		+ scaling));
 	if (len[1] >= var->map->res_width)
-	len[1] = var->map->res_width - 1;
+		len[1] = var->map->res_width - 1;
 }
 
 t_sprites	duplicate_sprite(t_sprites src)

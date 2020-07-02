@@ -1,7 +1,7 @@
 - Sprites
-	Truncamiento incorrecto por un lado
-	Explota al mirar varios sprites a la vez
-
+	Hay sliding al fijarse por la izqda
+	Explota al mirar varios sprites a la vez, ¿optimizar trig?
+- Meter error si el mapa no es conexo
 - --save  
 - Normi   
 - Entrega 
